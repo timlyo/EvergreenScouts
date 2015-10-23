@@ -1,0 +1,51 @@
+<nav class='navbar navbar-inverse navbar-fixed-top'>
+    <div class='container'>
+        <div class='navbar-header'>
+            <button class='navbar-toggle' data-target='.navbar-collapse' data-toggle='collapse' type='button'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+        </div>
+
+        <div class="row">
+            <div class='collapse navbar-collapse' id='navbar'>
+                <a class='navbar-brand' href='/'>Evergreens</a>
+                <ul class='nav navbar-nav'>
+                    <li>
+                        <a href='/scouts'>Scouts</a>
+                    </li>
+                    <li>
+                        <a href='/cubs'>Cubs</a>
+                    </li>
+                    <li>
+                        <a href='/beavers'>Beavers</a>
+                    </li>
+                    <li>
+                        <a href='/explorers'>Explorers</a>
+                    </li>
+                    <li>
+                        <a href='/network'>Network</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class='collapse navbar-collapse' id="groupNav">
+                <ul class='nav navbar-nav'>
+                    {% if group == "cubs" %}
+                        {% include "partials/cubNavigation.html" %}
+                    {% endif %}
+
+                    {% if group == "scouts" %}
+                        {% include "partials/scoutNavigation.html" %}
+                    {% endif %}
+
+                    {% if group == "beavers" %}
+                        {% include "partials/beaverNavigation.html" %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

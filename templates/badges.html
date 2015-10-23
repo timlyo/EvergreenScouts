@@ -1,0 +1,65 @@
+{% extends "partials/layout.html" %}
+{% block headerAdditionals %}
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
+    <link href='{{url_for("static", filename="css/badges.css")}}' rel='stylesheet' type='text/css'>
+{% endblock  %}
+
+{% block body %}
+<div class="container">
+    <div class="col-sm-12">
+        <h2>Core Badges</h2>
+        {% for badge in badges["core_badges"] %}
+
+            <div class="card col-sm-2 badgeBox">
+                <p>{{badge[0]}}</p>
+                <img src="{{badge[1]}}" class="img-responsive">
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="col-sm-12">
+        <h2>Activity Badges</h2>
+        {% for badge in badges["activity_badges"] %}
+            <div class="card col-sm-2 badgeBox">
+                <p>{{badge[0]}}</p>
+                <img src="{{badge[1]}}" class="img-responsive">
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="col-sm-12">
+        <h2>Staged Badges</h2>
+        {% for badge in badges["staged_badges"] %}
+            <div class="card col-sm-2 badgeBox">
+                <p>{{badge[0]}}</p>
+                <img src="{{badge[1]}}" class="img-responsive">
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if group != "explorers" %}
+        <div class="col-sm-12">
+            <h2>Challenge Badges</h2>
+            {% for badge in badges["challenge_badges"] %}
+                <div class="card col-sm-2 badgeBox">
+                    <p>{{badge[0]}}</p>
+                    <img src="{{badge[1]}}" class="img-responsive">
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if group == "explorers" %}
+        <div class="col-sm-12">
+            <h2>Awards</h2>
+            {% for badge in badges["awards"] %}
+                <div class="card col-sm-2 badgeBox">
+                    <p>{{badge[0]}}</p>
+                    <img src="{{badge[1]}}" class="img-responsive">
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

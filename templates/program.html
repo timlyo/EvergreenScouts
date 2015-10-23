@@ -1,0 +1,31 @@
+{% extends "partials/layout.html" %}
+
+{% block headerAdditionals %}
+<link href='{{url_for("static", filename="css/landing.css")}}' rel='stylesheet' type='text/css'>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-sm-8 card">
+        {% for program in programs %}
+            {% if program["title"] %}
+                <h2>{{ program["title"] }}</h2>
+            {% endif %}
+
+            <table class="table">
+                {% for date in program["events"] %}
+                    <tr>
+                        <td>{{date[0]}}</td>
+                        <td>{{date[1]}}</td>
+                        <td>{{date[2]}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    </div>
+
+    <div class="col-sm-3 col-md-offset-1 hidden-xs card">
+        <h1>Latest News</h1>
+    </div>
+</div>
+{% endblock %}
