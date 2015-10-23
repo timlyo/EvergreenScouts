@@ -1,11 +1,19 @@
 import argparse
 
 from flask import Flask, render_template
+import flask_login
+
+from flask_wtf import Form
 
 from website import data
+from website import user
 
 app = Flask(__name__)
+app.secret_key = "temp key"
 badgeList = data.get_remote_json("https://raw.githubusercontent.com/timlyo/ScoutBadges/master/badges.json")
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
 
 
 @app.route("/index")
@@ -41,6 +49,34 @@ def scouts():
 @app.route("/beavers")
 def beavers():
     return render_template("beavers.html", group="beavers")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id not in user.users:
+        return None
+
+    current_user = user.User()
+    current_user.id = user_id
+    return current_user
+
+
+@login_manager.request_loader
+def request_loader(request):
+    user_id = request.form.get("id")
+    if user_id not in user.users:
+        return None
+
+    current_user = User()
+    current_user.id = user_id
+
+    current_user.is_authenticated = request.form["pw"] == user.users[user_id]["pw"]
+
+    return current_user
 
 
 if __name__ == "__main__":

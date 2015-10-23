@@ -1,0 +1,6 @@
+{% extends "partials/layout.html" %}
+
+{% block body %}
+    {{ form.hidden_tag() }}
+    {{ form.login.label }} {{ form.login(size=20) }}
+{% endblock %}

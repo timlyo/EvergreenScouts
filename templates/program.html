@@ -13,6 +13,11 @@
             {% endif %}
 
             <table class="table">
+                <tr>
+                    <th>Date</th>
+                    <th>Activity</th>
+                    <th>Notes</th>
+                </tr>
                 {% for date in program["events"] %}
                     <tr>
                         <td>{{date[0]}}</td>
