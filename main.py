@@ -1,12 +1,13 @@
 import argparse
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import flask_login
-
 from flask_wtf import Form
+from flask_wtf.html5 import EmailField
+from wtforms import PasswordField
 
 from website import data
-from website import user
+from website import database
 
 app = Flask(__name__)
 app.secret_key = "temp key"
@@ -14,6 +15,11 @@ badgeList = data.get_remote_json("https://raw.githubusercontent.com/timlyo/Scout
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
+
+
+class LoginForm(Form):
+    user_id = EmailField("username")
+    password = PasswordField("password")
 
 
 @app.route("/index")
@@ -46,35 +52,52 @@ def scouts():
     return render_template("scouts.html", group="scouts")
 
 
+@flask_login.login_required
 @app.route("/beavers")
 def beavers():
     return render_template("beavers.html", group="beavers")
 
-@app.route("/login")
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    form = LoginForm(request.form)
+    if form.validate_on_submit():
+        id = form["user_id"].data
+        user = database.User(id)
+        if user.password == form["password"].data:
+            flask_login.login_user(user)
+            print(id, "has logged in")
+        else:
+            print(id, "failed to log in")
+    return render_template("login.html", form=form)
+
+
+@app.route("/logout")
+def logout():
+    print("logout")
+    flask_login.logout_user()
+    return "ok"
 
 
 @login_manager.user_loader
-def load_user(user_id):
-    if user_id not in user.users:
+def load_user(id):
+    if id not in database.User.users:
         return None
 
-    current_user = user.User()
-    current_user.id = user_id
+    current_user = database.User(id)
+    current_user.id = id
     return current_user
 
 
 @login_manager.request_loader
 def request_loader(request):
     user_id = request.form.get("id")
-    if user_id not in user.users:
+    if user_id not in database.User.users:
         return None
 
-    current_user = User()
-    current_user.id = user_id
+    current_user = database.User(user_id)
 
-    current_user.is_authenticated = request.form["pw"] == user.users[user_id]["pw"]
+    current_user.is_authenticated = request.form["pw"] == database.users[user_id]["pw"]
 
     return current_user
 

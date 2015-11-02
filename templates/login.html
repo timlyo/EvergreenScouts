@@ -1,6 +1,10 @@
 {% extends "partials/layout.html" %}
 
 {% block body %}
+<form method="post" action="/login">
     {{ form.hidden_tag() }}
-    {{ form.login.label }} {{ form.login(size=20) }}
+    {{ form.user_id.label }} {{ form.user_id(size=20) }}
+    {{ form.password.label }} {{ form.password() }}
+    <p><input type="submit" value="login"></p>
+</form>
 {% endblock %}
