@@ -29,6 +29,27 @@
                         <a href='/network'>Network</a>
                     </li>
                 </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_authenticated %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                {{ current_user.get_id() }}
+                                <span class="caret"></span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a href="/admin">Admin</a></li>
+                                <li><a href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href='/login'>Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+
             </div>
 
             <div class='collapse navbar-collapse' id="groupNav">

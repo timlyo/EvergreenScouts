@@ -1,0 +1,13 @@
+{% extends "partials/layout.html" %}
+{% block headerAdditionals %}
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
+{% endblock  %}
+
+{% block body %}
+<div class="container">
+    <div class="col-sm-8 card">
+        {{ name }}
+    </div>
+</div>
+{% endblock %}
