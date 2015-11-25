@@ -6,22 +6,22 @@
 
 {% block body %}
 <div class="container">
-    <div class="col-sm-8 card">
-        <h1>Evergreens Scouts</h1>
+    <div class="col-sm-8">
+        <div class="card">
+            <h1>Evergreens Scouts</h1>
 
-        <p>Bromsgrove based scout</p>
-    </div>
+            <p>Bromsgrove based scout</p>
+        </div>
 
-    <div class="col-sm-3 hidden-xs card">
-        <h1>Latest News</h1>
-    </div>
+        <div class="card">
+            <h2>Find us</h2>
+            <div id="map">
 
-    <div class="col-sm-8 card">
-        <h2>Find us</h2>
-        <div id="map">
-
+            </div>
         </div>
     </div>
+
+    {% include "partials/latestNews.html" %}
 
     <script>
         lat = 52.33555;

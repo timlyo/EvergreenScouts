@@ -1,16 +1,15 @@
 {% extends "partials/layout.html" %}
-
 {% block headerAdditionals %}
-    <link href='{{url_for("static", filename="css/landing.css")}}' rel='stylesheet' type='text/css'>
-{% endblock %}
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
+{% endblock  %}
 
 {% block body %}
 <div class="container">
     <div class="col-sm-8 card">
-        <img src="static/img/scouts.jpg" class="img-responsive">
         <h1>Evergreens Scouts</h1>
 
-        Bromsgrove based scout group
+        Phone Number: {{phone_number}}
     </div>
 
     {% include "partials/latestNews.html" %}

@@ -1,13 +1,32 @@
 {% extends "partials/layout.html" %}
 {% block headerAdditionals %}
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
+<script src="/static/javascript/editProgram.js"></script>
 {% endblock  %}
 
 {% block body %}
 <div class="container">
-    <div class="col-sm-8 card">
-        {{ name }}
+    <div class="card">
+        <a href="/admin">Back</a>
+
+        <h1>{{ name }} Program </h1>
+
+        <form action="/editProgram/{{name}}" method="post" class="form-inline" role="form">
+
+            <div class="form-group">
+                <input type="button" value="Add Row" class="btn btn-default" onclick="addRow()">
+                <input type="submit" value="Save" class="btn btn-default">
+            </div>
+            <br>
+
+            {% for week in form.weeks %}
+            <div class="form-group week">
+                {{week.date(class="form-control")}}
+                {{week.activity(class="form-control")}}
+                {{week.notes(class="form-control")}}
+                <input type="button" value="-" onclick="removeRow(this)" class="btn deleteButton">
+            </div>
+            {% endfor %}
+        </form>
     </div>
 </div>
 {% endblock %}

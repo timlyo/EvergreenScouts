@@ -20,6 +20,7 @@
     <meta content='Evergreens Scouts' name='author'>
 
     {% block title %} <title>Evergreens Scouts</title> {% endblock %}
+
     {% block headerAdditionals %} {% endblock %}
 </head>
 
@@ -28,15 +29,15 @@
         {% include "partials/navigation.html" %}
     {% endblock %}
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-warning" role="alert">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
 
     <br>
 

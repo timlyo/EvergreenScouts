@@ -1,0 +1,16 @@
+{% extends "partials/layout.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="col-sm-8 card">
+
+        {% if current_user.is_authenticated %}
+            <a class="btn btn-default" role="button" href="/news/{{article['eid']}}/edit">Edit</a>
+            <a class="btn btn-default" role="button" href="/admin">Show all</a>
+        {% endif %}
+
+        <h1>{{article["title"]}}</h1>
+        {{article["body"] | safe}}
+    </div>
+</div>
+{% endblock %}

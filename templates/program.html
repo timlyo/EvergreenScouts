@@ -8,8 +8,8 @@
 <div class="container">
     <div class="col-sm-8 card">
         {% for program in programs %}
-            {% if program["title"] %}
-                <h2>{{ program["title"] }}</h2>
+            {% if program["name"] %}
+                <h2>{{ program["name"] }}</h2>
             {% endif %}
 
             <table class="table">
@@ -18,19 +18,17 @@
                     <th>Activity</th>
                     <th>Notes</th>
                 </tr>
-                {% for date in program["events"] %}
+                {% for event in program["events"] %}
                     <tr>
-                        <td>{{date[0]}}</td>
-                        <td>{{date[1]}}</td>
-                        <td>{{date[2]}}</td>
+                        <td>{{event[0] | format_date}}</td>
+                        <td>{{event[1]}}</td>
+                        <td>{{event[2]}}</td>
                     </tr>
                 {% endfor %}
             </table>
         {% endfor %}
     </div>
 
-    <div class="col-sm-3 col-md-offset-1 hidden-xs card">
-        <h1>Latest News</h1>
-    </div>
+    {% include "partials/latestNews.html" %}
 </div>
 {% endblock %}

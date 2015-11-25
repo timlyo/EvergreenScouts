@@ -1,36 +1,32 @@
 import argparse
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 import flask_login
 from flask_login import login_required
-from flask_wtf import Form
-from wtforms import StringField, PasswordField
 
+import datetime
+
+from website import filters
+from website import forms
 from website import data
 from website import database
 
 app = Flask(__name__)
-app.secret_key = "temp key"
+app.secret_key = "temp key"  # TODO change this
 badgeList = data.get_remote_json("https://raw.githubusercontent.com/timlyo/ScoutBadges/master/badges.json")
+app.jinja_env.filters["format_date"] = filters.format_date
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
-
-class LoginForm(Form):
-	user_id = StringField("username")
-	password = PasswordField("password")
+login_manager.login_view = "/login"
 
 
 @app.route("/index")
 @app.route("/")
 def index():
-	return render_template("index.html")
-
-
-@app.route("/getInvolved")
-def get_involved():
-	return render_template("getInvolved.html")
+	news = data.get_latest_news(5)
+	return render_template("index.html", news=news)
 
 
 @app.route("/<group>/badges")
@@ -39,55 +35,89 @@ def badges(group):
 	return render_template("badges.html", group=group, badges=badgeList[group])
 
 
+@app.route("/<group>/program")
+def get_program(group):
+	if group == "cubs":
+		thor_calendar = data.get_program("Thor")
+		woden_calendar = data.get_program("Woden")
+
+		return render_template("program.html", group="cubs", programs=[thor_calendar, woden_calendar])
+	if group == "scouts":
+		program = data.get_program("Scouts")
+
+		return render_template("program.html", group="scouts", programs=[program])
+	else:
+		return "Program not found"
+
+
+@app.route("/<group>/contact")
+def contact(group):
+	phone_number = None
+	if group == "cubs":
+		phone_number = data.get_user("thor")["phone"]
+	return render_template("contact.html", group=group, phone_number=phone_number)
+
+
+@app.route("/news/<id>")
+def news(id):
+	article = data.get_article(int(id))
+	return render_template("news.html", article=article)
+
+
+@login_required
+@app.route("/news/<id>/edit", methods=["GET", "POST"])
+def edit_news(id):
+	id = int(id)
+
+	if request.method == "POST":
+		if not data.get_article(id):
+			print("Creating article", id)
+			data.create_new_article()
+
+		print("update to article", id)
+		print(request.form)
+		data.update_article(id, body=request.form["content"], title=request.form["title"])
+		flash("Saved changes")
+
+	creating = request.args.get("action") == "create"
+
+	article = data.get_article(id)
+	return render_template("editNews.html", article=article, id=id, creating=creating)
+
+
 @app.route("/cubs")
 def cubs():
-	return render_template("cubs.html", group="cubs")
-
-
-@app.route("/cubs/program")
-def cubs_program():
-	thorCalendar = data.get_json("data/programs/Thor.json")
-	wodenCalendar = data.get_json("data/programs/Woden.json")
-
-	return render_template("program.html", group="cubs", programs=[thorCalendar, wodenCalendar])
+	news = data.get_latest_news(5, unit="cubs")
+	return render_template("cubs.html", group="cubs", news=news)
 
 
 @app.route("/scouts")
 def scouts():
-	return render_template("scouts.html", group="scouts")
+	news = data.get_latest_news(5, unit="scouts")
+	return render_template("scouts.html", group="scouts", news=news)
 
 
 @app.route("/beavers")
 def beavers():
-	return render_template("beavers.html", group="beavers")
+	news = data.get_latest_news(5, unit="beavers")
+	return render_template("beavers.html", group="beavers", news=news)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-	form = LoginForm(request.form)
+	form = forms.LoginForm(request.form)
 	if form.validate_on_submit():
 		id = form["user_id"].data
 		user = database.User(id)
 		if user.check_password(form["password"].data):
 			flask_login.login_user(user)
 			print(id, "has logged in")
+			return redirect("/")
 		else:
 			print(id, "failed to log in")
-		return redirect("/")
+			flash("Wrong username and password combination")
 
 	return render_template("login.html", form=form)
-
-
-@app.route("/admin")
-@login_required
-def admin():
-	return render_template("admin/admin.html", program_list=data.get_program_list())
-
-
-@app.route("/editProgram/<name>")
-@login_required
-def edit_programs(name):
-	return render_template("admin/editProgram.html", name=name)
 
 
 @app.route("/logout")
@@ -97,9 +127,38 @@ def logout():
 	return redirect("/")
 
 
+@app.route("/admin")
+@login_required
+def admin():
+	return render_template("admin/admin.html", program_list=data.get_program_list(), articles=data.get_latest_news(), news_count=data.get_news_count())
+
+
+@app.route("/editProgram/<name>", methods=["POST", "GET"])
+@login_required
+def edit_program(name):
+	print("edited", name, "program")
+
+	program_data = data.get_program(name)
+
+	form = forms.ProgramForm(request.form)
+	if request.method == "POST":
+		data.save_program_from_form(form.data, name)
+		flash("Saved form changes")
+
+	else:
+		for week in program_data["events"]:
+			str_date = [int(x) for x in week[0].split("-")]
+			date = datetime.date(str_date[0], str_date[1], str_date[2])
+			form.weeks.append_entry({"date": date, "activity": week[1], "notes": week[2]})
+
+	return render_template("admin/editProgram.html", name=name, program_data=program_data, form=form)
+
+
 @login_manager.user_loader
-def load_user(id):
-	if id not in database.User.users:
+def load_user(id: str):
+	try:
+		data.get_user(id)
+	except KeyError:
 		return None
 
 	current_user = database.User(id)
@@ -110,7 +169,9 @@ def load_user(id):
 @login_manager.request_loader
 def request_loader(request) -> database.User:
 	user_id = request.form.get("id")
-	if user_id not in database.User.users:
+	try:
+		data.get_user(user_id)
+	except KeyError:
 		return None
 
 	current_user = database.User(user_id)

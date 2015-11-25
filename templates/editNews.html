@@ -1,0 +1,47 @@
+{% extends "partials/layout.html" %}
+{% block headerAdditionals %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.1/trix.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.1/trix.js"></script>
+{% endblock  %}
+
+{% block body %}
+<div class="container">
+    <div class="col-sm-8 card">
+
+        <form method="post" action="/news/{{id}}/edit">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input value="{{article['title']}}" id="title" name="title" class="form-control">
+
+                <label for="unit">Unit</label>
+                <select name="unit" id="unit" class="form-control">
+                    <option value="general">General</option>
+                    <option value="scouts">Scouts</option>
+                    <option value="cubs">Cubs</option>
+                    <option value="beavers">Beavers</option>
+                    <option value="explorers">Explorers</option>
+                    <option value="network">Network</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input id="body" value="{{article['body'] | safe}}" type="hidden" name="content" class="form-control">
+                <trix-editor input="body"></trix-editor>
+            </div>
+
+            <div class="form-group">
+                {% if creating %}
+                    <a class="btn btn-default" role="button" href="/admin">Cancel</a>
+                {% else %}
+                    <a class="btn btn-default" role="button" href="/news/{{id}}">Back</a>
+                    {% if current_user.is_authenticated %}
+                        <a class="btn btn-default" role="button" href="/admin">Show all</a>
+                    {% endif %}
+                {% endif %}
+
+                <input type="submit" value="Save" class="btn btn-default">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

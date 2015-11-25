@@ -1,19 +1,21 @@
 {% extends "partials/layout.html" %}
 
 {% block body %}
-<div class="col-sm-8 card">
-    <form id="loginForm" method="post" action="/login" class="form-inline" role="form">
-        {{ form.hidden_tag() }}
-        <div class="row">
-            <label> Username </label>
-            {{ form.user_id(size=20) }}
-        </div>
+<div class="container">
+    <div class="col-sm-8 card">
+        <form id="loginForm" method="post" action="/login" class="form-horizontal" role="form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label class="control-label"> Username </label>
+                {{ form.user_id(size=20) }}
+            </div>
 
-        <div class="row">
-            <label> Password </label>
-            {{ form.password() }}
-        </div>
-        <p><input type="submit" value="login"></p>
-    </form>
+            <div class="form-group">
+                <label class="control-label"> Password </label>
+                {{ form.password() }}
+            </div>
+            <p><input type="submit" value="Login" class="btn btn-default"></p>
+        </form>
+    </div>
 </div>
 {% endblock %}

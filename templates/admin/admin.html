@@ -12,9 +12,35 @@
         <h2>Edit programs</h2>
         <ul>
             {% for program in program_list %}
-                <li><a href="editProgram/{{program}}">{{ program }} </a></li>
+                <li><a href="editProgram/{{program['name']}}">{{ program["name"] }} </a></li>
             {% endfor %}
         </ul>
+
+        <h2>News Articles</h2>
+
+        <a class="btn btn-default" href="news/{{news_count+1}}/edit?action=create">New Article</a>
+
+        <br>
+        <br>
+
+        <table class="table table-responsive table-hover">
+            <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Unit</th>
+                <th>State</th>
+            </tr>
+            {% for article in articles %}
+                <tr>
+                    <td><a href="/news/{{article['eid']}}">{{article["title"]}}</a></td>
+                    <td>{{article["date"]}}</td>
+                    <td>{{article["unit"]}}</td>
+                    <td>{{article["state"]}}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+
+        </table>
     </div>
 </div>
 {% endblock %}
