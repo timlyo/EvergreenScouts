@@ -3,19 +3,22 @@
 {% block body %}
 <div class="container">
     <div class="col-sm-8 card">
-        <form id="loginForm" method="post" action="/login" class="form-horizontal" role="form">
+
+        <form id="loginForm" method="post" action="/login" class="form" role="form">
             {{ form.hidden_tag() }}
+
             <div class="form-group">
-                <label class="control-label"> Username </label>
-                {{ form.user_id(size=20) }}
+                <label for="user_id"> Username </label>
+                {{ form.user_id(size=20, class="form-control") }}
             </div>
 
             <div class="form-group">
-                <label class="control-label"> Password </label>
-                {{ form.password() }}
+                <label for="password"> Password </label>
+                {{ form.password(class="form-control") }}
             </div>
-            <p><input type="submit" value="Login" class="btn btn-default"></p>
+            <button type="submit" class="btn btn-default">Login</button>
         </form>
+
     </div>
 </div>
 {% endblock %}

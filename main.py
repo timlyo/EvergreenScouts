@@ -1,10 +1,10 @@
-import argparse
-
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, make_response
 import flask_login
 from flask_login import login_required
 
+import argparse
 import datetime
+import json
 
 from website import filters
 from website import forms
@@ -74,15 +74,41 @@ def edit_news(id):
 			print("Creating article", id)
 			data.create_new_article()
 
-		print("update to article", id)
-		print(request.form)
-		data.update_article(id, body=request.form["content"], title=request.form["title"])
-		flash("Saved changes")
+		form = request.form
+		data.update_article(id, body=form["content"], title=form["title"], outline=form["outline"], unit=form["unit"])
+		flash("Saved changes", "success")
 
 	creating = request.args.get("action") == "create"
 
 	article = data.get_article(id)
 	return render_template("editNews.html", article=article, id=id, creating=creating)
+
+
+@login_required
+@app.route("/news/<id>/delete", methods=["POST"])
+def delete_news(id):
+	id = int(id)
+
+	data.update_article(id, state="deleted")
+	return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@login_required
+@app.route("/news/<id>/restore", methods=["POST"])
+def restore_news(id):
+	id = int(id)
+
+	data.update_article(id, state="editing")
+	return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@login_required
+@app.route("/news/<id>/publish", methods=["POST"])
+def publish_news(id):
+	id = int(id)
+
+	data.update_article(id, state="published")
+	return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @app.route("/cubs")
@@ -100,6 +126,7 @@ def scouts():
 @app.route("/beavers")
 def beavers():
 	news = data.get_latest_news(5, unit="beavers")
+	print(news)
 	return render_template("beavers.html", group="beavers", news=news)
 
 
@@ -130,7 +157,8 @@ def logout():
 @app.route("/admin")
 @login_required
 def admin():
-	return render_template("admin/admin.html", program_list=data.get_program_list(), articles=data.get_latest_news(), news_count=data.get_news_count())
+	return render_template("admin/admin.html", program_list=data.get_program_list(), articles=data.get_latest_news(all=True),
+	                       news_count=data.get_news_count())
 
 
 @app.route("/editProgram/<name>", methods=["POST", "GET"])

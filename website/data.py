@@ -71,12 +71,14 @@ def get_user(id: str):
 
 
 # news stuff
-def get_latest_news(count: int = None, unit=""):
+def get_latest_news(count: int = None, unit="", all=False):
 	result = None
-	if unit == "":
+	if all:
 		result = news_db.all()
+	elif unit == "":
+		result = news_db.search(where("state") == "published")
 	else:
-		result = news_db.search(where("unit") == unit)
+		result = news_db.search(where("unit") == unit & (where("state") == "published"))
 
 	if count:
 		return result[:count]
@@ -96,15 +98,31 @@ def get_article(id=None):
 	return result
 
 
-def update_article(id, body=None, title=None):
+def update_article(id, body=None, title=None, outline=None, unit=None, state=None):
 	assert isinstance(id, int), "id must be an int not a {}".format(type(id))
+
+	data = {}
 	if body:
-		news_db.update({"body": body}, eids=[id])
+		data["body"] = body
 
 	if title:
-		news_db.update({"title": title}, eids=[id])
+		data["title"] = title
 
-	news_db.update({"updated": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, eids=[id])
+	if outline:
+		data["outline"] = outline
+
+	if unit:
+		data["unit"] = unit
+
+	if state in ["deleted", "published", "editing"]:
+		data["state"] = state
+	elif not None:
+		print("Invalid value for state", state, file=sys.stderr)
+
+	print("Update to article", id)
+	print(data)
+	data["updated"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+	news_db.update(data, eids=[id])
 
 
 def create_new_article(unit=None) -> int:
