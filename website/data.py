@@ -1,4 +1,4 @@
-import simplejson as json
+import ujson as json
 
 import sys
 import urllib3

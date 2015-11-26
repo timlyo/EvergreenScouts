@@ -11,10 +11,12 @@
 
         <h1>{{article["title"]}}</h1>
 
-        <span>
-            Created: {{article['created'] }}
-            {{ "Updated" if article['created'] != article["updated"] }}
-        </span>
+        <p class="text-muted">
+            Created: {{article['created'] | format_date_readable}}
+            {% if (article['created'] != article["updated"]) %}
+                Updated: {{ article['updated'] | format_date_readable}}
+            {% endif %}
+        </p>
 
         {{article["body"] | safe}}
     </div>

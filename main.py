@@ -31,6 +31,11 @@ def index():
 	return render_template("index.html", news=news)
 
 
+@app.route("/upload")
+def upload():
+	return render_template("upload.html")
+
+
 @app.route("/<group>/badges")
 def badges(group):
 	print(group)
