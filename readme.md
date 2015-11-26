@@ -31,6 +31,7 @@ Designed to be run as a mod_wsgi application through apache. Development server 
     * flask 
     * flask-login
     * flask-wtf
+    * flask-uploads
     
     * certifi
     * tinydb

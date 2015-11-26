@@ -1,4 +1,4 @@
-directory = static
+directory = website/static
 
 all:
 	sass --watch sass/style.sass:${directory}/css/style.css --style compressed &
