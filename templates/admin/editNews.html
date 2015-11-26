@@ -40,17 +40,15 @@
             <div class="form-group">
                 {% if creating %}
                     <a class="btn btn-default" role="button" href="/admin">Cancel</a>
+                    <a class="btn btn-default" role="button" onclick="publishNews({{id}})">Publish</a>
                 {% else %}
                     <a class="btn btn-default" role="button" href="/news/{{id}}">Back</a>
                     <a class="btn btn-default" role="button" href="/admin">Show all</a>
                     {% if article["state"] == "deleted" %}
                         <a class="btn btn-default" role="button" onclick="restoreNews({{id}})">Restore</a>
                     {% else %}
-                        {% if article["state"] == "editing" %}
-                            <a class="btn btn-default" role="button" onclick="publishNews({{id}})">Publish</a>
-                        {% else %}
-                            <a class="btn btn-default" role="button" onclick="deleteNews({{id}})">Delete</a>
-                        {% endif %}
+                        <a class="btn btn-default" role="button" onclick="publishNews({{id}})">Publish</a>
+                        <a class="btn btn-default" role="button" onclick="deleteNews({{id}})">Delete</a>
                     {% endif %}
 
 

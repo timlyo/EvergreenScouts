@@ -78,7 +78,7 @@ def get_latest_news(count: int = None, unit="", all=False):
 	elif unit == "":
 		result = news_db.search(where("state") == "published")
 	else:
-		result = news_db.search(where("unit") == unit & (where("state") == "published"))
+		result = news_db.search((where("unit") == unit) & (where("state") == "published"))
 
 	if count:
 		return result[:count]
@@ -127,4 +127,4 @@ def update_article(id, body=None, title=None, outline=None, unit=None, state=Non
 
 def create_new_article(unit=None) -> int:
 	date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-	news_db.insert({"created": date, "updated": date})
+	news_db.insert({"created": date, "updated": date, "state": "editing"})

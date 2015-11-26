@@ -2,12 +2,24 @@
 
 import datetime
 
+import sys
 
-def format_date(date: str):
-	int_date = [int(x) for x in date.split("-")]
-	date = datetime.date(int_date[0], int_date[1], int_date[2])
 
-	formatted = date.strftime("%d %B")
+def format_date_readable(date: str):
+	return format_date(date, "%d %b")
 
-	return formatted
 
+def format_date_time(date: str):
+	return format_date(date, "%d %b %y %H:%M")
+
+
+def format_date(date: str, format="%c"):
+	try:
+		date = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+
+		formatted = date.strftime(format)
+
+		return formatted
+	except ValueError as e:
+		print("failed to format date: ", e, file=sys.stderr)
+		return date

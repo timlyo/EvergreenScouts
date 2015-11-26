@@ -4,7 +4,7 @@
         {% for article in news %}
             <article>
                 <a href="news/{{article['eid']}}">
-                    <h4>{{article["title"]}} <small>{{article["date"]}}</small></h4>
+                    <h4>{{article["title"]}} <small>{{article["created"] | format_date_readable}}</small></h4>
                 </a>
 
                 <p>{{article["outline"]}}</p>

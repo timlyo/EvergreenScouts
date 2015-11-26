@@ -2,14 +2,15 @@
 
 function deleteNews(id) {
     var r = confirm("Are you sure you want to delete this article?");
-    console.log(r);
-    console.log(id);
+    if(!r){
+        return;
+    }
 
     $.post("/news/" + id + "/delete", null, function (data, testStatus, jqXHR) {
         data = JSON.parse(data);
         if (data.success) {
             console.log("ok");
-            window.location.replace("/admin");
+            location.reload();
         }else{
             console.log("probs");
             alert("Error, failed to delete\n data");
@@ -19,14 +20,16 @@ function deleteNews(id) {
 
 function restoreNews(id) {
     var r = confirm("Are you sure you want to restore this article?");
-    console.log(r);
-    console.log(id);
+    if(!r){
+        return;
+    }
 
     $.post("/news/" + id + "/restore", null, function (data, testStatus, jqXHR) {
         data = JSON.parse(data);
         if (data.success) {
             console.log("ok");
-            window.location.replace("/admin");
+            //window.location.replace("/admin");
+            location.reload();
         }else{
             console.log("probs");
             alert("Error, failed to restore\n data");
@@ -35,15 +38,17 @@ function restoreNews(id) {
 }
 
 function publishNews(id) {
-    var r = confirm("Are you sure you want to restore this article?");
-    console.log(r);
-    console.log(id);
+    var r = confirm("Are you sure you want to publish this article?");
+    if(!r){
+        return;
+    }
 
     $.post("/news/" + id + "/publish", null, function (data, testStatus, jqXHR) {
         data = JSON.parse(data);
         if (data.success) {
             console.log("ok");
-            window.location.replace("/admin");
+            //window.location.replace("/admin");
+            location.reload();
         }else{
             console.log("probs");
             alert("Error, failed to restore\n data");

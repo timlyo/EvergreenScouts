@@ -15,6 +15,8 @@ app = Flask(__name__)
 app.secret_key = "temp key"  # TODO change this
 badgeList = data.get_remote_json("https://raw.githubusercontent.com/timlyo/ScoutBadges/master/badges.json")
 app.jinja_env.filters["format_date"] = filters.format_date
+app.jinja_env.filters["format_date_readable"] = filters.format_date_readable
+app.jinja_env.filters["format_date_time"] = filters.format_date_time
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
@@ -25,7 +27,7 @@ login_manager.login_view = "/login"
 @app.route("/index")
 @app.route("/")
 def index():
-	news = data.get_latest_news(5)
+	news = reversed(data.get_latest_news(5))
 	return render_template("index.html", news=news)
 
 
@@ -81,7 +83,7 @@ def edit_news(id):
 	creating = request.args.get("action") == "create"
 
 	article = data.get_article(id)
-	return render_template("editNews.html", article=article, id=id, creating=creating)
+	return render_template("admin/editNews.html", article=article, id=id, creating=creating)
 
 
 @login_required
@@ -157,8 +159,11 @@ def logout():
 @app.route("/admin")
 @login_required
 def admin():
-	return render_template("admin/admin.html", program_list=data.get_program_list(), articles=data.get_latest_news(all=True),
-	                       news_count=data.get_news_count())
+	program_list = data.get_program_list()
+	articles = reversed(data.get_latest_news(all=True))
+	news_count = data.get_news_count()
+
+	return render_template("admin/admin.html", program_list=program_list, articles=articles, news_count=news_count)
 
 
 @app.route("/editProgram/<name>", methods=["POST", "GET"])
@@ -217,4 +222,4 @@ if __name__ == "__main__":
 	if args.debug:
 		app.debug = True
 
-	app.run()
+	app.run(threaded=True)

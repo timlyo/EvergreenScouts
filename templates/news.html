@@ -10,6 +10,12 @@
         {% endif %}
 
         <h1>{{article["title"]}}</h1>
+
+        <span>
+            Created: {{article['created'] }}
+            {{ "Updated" if article['created'] != article["updated"] }}
+        </span>
+
         {{article["body"] | safe}}
     </div>
 </div>

@@ -6,7 +6,7 @@
 
 {% block body %}
 <div class="container">
-    <div class="col-sm-8 card">
+    <div class="col-sm-12 card">
         <h1>Admin</h1>
 
         <h2>Edit programs</h2>
@@ -26,14 +26,16 @@
         <table class="table table-responsive table-hover">
             <tr>
                 <th>Title</th>
-                <th>Date</th>
+                <th>Created</th>
+                <th>Updated</th>
                 <th>Unit</th>
                 <th>State</th>
             </tr>
             {% for article in articles %}
                 <tr>
                     <td><a href="/news/{{article['eid']}}">{{article["title"]}}</a></td>
-                    <td>{{article["date"]}}</td>
+                    <td>{{article["created"] | format_date_time}}</td>
+                    <td>{{article["updated"] | format_date_time}}</td>
                     <td>{{article["unit"]}}</td>
                     <td>{{article["state"]}}</td>
                     <td></td>

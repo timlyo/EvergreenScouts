@@ -1,2 +1,2 @@
-body{background-color:#EEE;padding-top:4em;font-family:"awesome",sans;min-height:100%}.card{background-color:#FFF;box-shadow:0px 5px 15px #D3D3D3;margin:10px;padding:10px}.card img{float:left;max-height:200px}#groupNav{padding-left:2em}#groupNav a{padding-top:0px;padding-bottom:0px}#map{height:500px}
+body{background-color:#EEE;padding-top:4em;font-family:"awesome",sans;min-height:100%}.card{background-color:#FFF;box-shadow:0px 5px 15px #D3D3D3;margin:10px;padding:10px}.card .img{float:left;max-width:200px}#groupNav{padding-left:2em}#groupNav a{padding-top:0px;padding-bottom:0px}#map{height:500px}
 /*# sourceMappingURL=style.css.map */

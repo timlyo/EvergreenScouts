@@ -1,1 +1,58 @@
-{"_default":{"1":{"title":"Test Article Please Ignore","created":"2015-11-22","state":"published","body":"<div>Test article please&nbsp;<strong>ignore<br><\/strong><br><\/div><blockquote>Famous line goes here<\/blockquote><div><br><\/div><ol><li>one<\/li><li>two<ul><li>thing<\/li><li>other thing<\/li><\/ul><\/li><li>three<\/li><\/ol><div><br><\/div><div><br><\/div>","unit":"general","updated":"2015-11-25 21:05:57","outline":"Test Article"},"2":{"title":"Cubs news test","created":"2015-11-22","state":"published","body":"<div>Cubs news<\/div><div><br><\/div><div><br><\/div>","unit":"cubs","updated":"2015-11-25 21:05:45","outline":"Test for cubs only article"},"3":{"title":"Test Scouts news","created":"2015-11-22","state":"published","body":"<div>Test article please&nbsp;<strong>ignore<br><\/strong><br><\/div><blockquote>Famous line goes here<\/blockquote><div><br><\/div><ol><li>one<\/li><li>two<ul><li>thing<\/li><li>other thing<\/li><\/ul><\/li><li>three<\/li><\/ol><div><br><\/div><div><br><\/div>","unit":"scouts","updated":"2015-11-25 20:07:47","outline":"Testing Scouts"},"4":{"title":"Beavers Test","created":"2015-11-25 18:56:08","state":"deleted","body":"<div>Testing<\/div>","unit":"beavers","updated":"2015-11-25 20:08:00","outline":"Article for testing"}}}
+{
+  "_default": {
+    "1": {
+      "body": "<div>Test article please&nbsp;<strong>ignore<br></strong><br></div><blockquote>Famous line goes here</blockquote><div><br></div><ol><li>one</li><li>two<ul><li>thing</li><li>other thing</li></ul></li><li>three</li></ol><div><br></div><div><br></div>",
+      "title": "Test Article Please Ignore",
+      "state": "deleted",
+      "created": "2015-11-22 00:00:00",
+      "outline": "Test Article",
+      "unit": "general",
+      "updated": "2015-11-25 21:17:34"
+    },
+    "2": {
+      "body": "<div>Homeless camp</div><div><br></div><div><br></div>",
+      "title": "Homeless Camp",
+      "state": "published",
+      "created": "2015-11-22 00:00:00",
+      "outline": "Cubs homeless camp",
+      "unit": "cubs",
+      "updated": "2015-11-25 21:15:19"
+    },
+    "3": {
+      "body": "<div>Test article please&nbsp;<strong>ignore<br></strong><br></div><blockquote>Famous line goes here</blockquote><div><br></div><ol><li>one</li><li>two<ul><li>thing</li><li>other thing</li></ul></li><li>three</li></ol><div><br></div><div><br></div>",
+      "title": "Test Scouts news",
+      "state": "published",
+      "created": "2015-11-22 00:00:00",
+      "outline": "Testing Scouts",
+      "unit": "scouts",
+      "updated": "2015-11-25 20:07:47"
+    },
+    "4": {
+      "body": "<div>Testing</div>",
+      "title": "Beavers Test",
+      "state": "deleted",
+      "created": "2015-11-25 00:00:08",
+      "outline": "Article for testing",
+      "unit": "beavers",
+      "updated": "2015-11-25 20:08:00"
+    },
+    "5": {
+      "body": "<div><strong>Test<br></strong><strong><em>Test</em></strong><em><br>Test<br></em><del>Test</del><br><br></div><blockquote>Test</blockquote><ul><li>Test</li></ul><ol><li>test</li><li>test<ol><li>test</li></ol></li></ol><ul><li>test</li></ul><pre>Test</pre>",
+      "title": "Test Article",
+      "state": "editing",
+      "created": "2015-11-25 21:18:41",
+      "outline": "New test article",
+      "unit": "general",
+      "updated": "2015-11-25 21:22:07"
+    },
+    "6": {
+      "body": "<div><strong>Where does this badge go?<br></strong>On your uniform<br><br><strong>What nights so we meet<br></strong>Wednesday and Thursday</div>",
+      "title": "Cubs FAQ",
+      "state": "published",
+      "created": "2015-11-26 11:46:46",
+      "outline": "Frequently asked questions",
+      "unit": "cubs",
+      "updated": "2015-11-26 11:58:05"
+    }
+  }
+}
