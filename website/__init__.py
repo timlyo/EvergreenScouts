@@ -11,7 +11,7 @@ app.jinja_env.filters["format_date"] = filters.format_date
 app.jinja_env.filters["format_date_readable"] = filters.format_date_readable
 app.jinja_env.filters["format_date_time"] = filters.format_date_time
 
-app.config["UPLOAD_FOLDER"] = "../uploads"
+app.config["UPLOAD_FOLDER"] = "uploads/"
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)

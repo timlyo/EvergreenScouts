@@ -1,14 +1,13 @@
 from website import app
 
-from flask import render_template, request, flash
+from flask import render_template, request, flash, redirect, url_for
 import flask
 from flask_login import login_required
+import datetime
+from website import app, forms, data
 
 from flaskext.uploads import secure_filename
-
-import datetime
-
-from website import app, forms, data
+import os
 
 
 @app.route("/index")
@@ -21,11 +20,14 @@ def index():
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
+	print("upload")
 	if request.method == "POST":
 		file = request.files["file"]
 		if file:
 			filename = secure_filename(file.filename)
-			file.save(os.path)
+			file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+			# TODO add database updates
+			return redirect("/")  # TODO change to album page
 
 	return render_template("upload.html")
 
