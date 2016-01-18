@@ -1,6 +1,6 @@
 from website import app
 
-from flask import render_template, request, flash
+from flask import render_template, request, flash, jsonify
 from flask_login import login_required
 
 import json
@@ -12,6 +12,7 @@ from website import app, data
 def news(id):
 	article = data.get_article(int(id))
 	return render_template("news.html", article=article)
+
 
 
 @login_required

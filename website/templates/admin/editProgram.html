@@ -1,32 +1,22 @@
 {% extends "partials/layout.html" %}
 {% block headerAdditionals %}
-<script src="/website/static/javascript/editProgram.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.4/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.4/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {% endblock  %}
 
 {% block body %}
+<script>
+    var programName = "{{name}}";
+</script>
+
 <div class="container">
-    <div class="card">
+    <div class="col-sm-12 card">
         <a href="/admin">Back</a>
-
         <h1>{{ name }} Program </h1>
-
-        <form action="/editProgram/{{name}}" method="post" class="form-inline" role="form">
-
-            <div class="form-group">
-                <input type="button" value="Add Row" class="btn btn-default" onclick="addRow()">
-                <input type="submit" value="Save" class="btn btn-default">
-            </div>
-            <br>
-
-            {% for week in form.weeks %}
-            <div class="form-group week">
-                {{week.date(class="form-control")}}
-                {{week.activity(class="form-control")}}
-                {{week.notes(class="form-control")}}
-                <input type="button" value="-" onclick="removeRow(this)" class="btn deleteButton">
-            </div>
-            {% endfor %}
-        </form>
+        <div id="program"></div>
+        <script type="text/babel" src="/static/javascript/program.js"></script>
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,64 @@
+{
+  "_default": {
+    "1": {
+      "state": "deleted",
+      "title": "Test Article Please Ignore",
+      "body": "<div>Test article please&nbsp;<strong>ignore<br><\/strong><br><\/div><blockquote>Famous line goes here<\/blockquote><div><br><\/div><ol><li>one<\/li><li>two<ul><li>thing<\/li><li>other thing<\/li><\/ul><\/li><li>three<\/li><\/ol><div><br><\/div><div><br><\/div>",
+      "updated": "2015-11-25 21:17:34",
+      "unit": "general",
+      "outline": "Test Article",
+      "created": "2015-11-22 00:00:00",
+      "open": false
+    },
+    "2": {
+      "state": "published",
+      "title": "Homeless Camp",
+      "body": "<div>Homeless camp<\/div><div><br><\/div><div><br><\/div>",
+      "updated": "2015-11-25 21:15:19",
+      "unit": "cubs",
+      "outline": "Cubs homeless camp",
+      "created": "2015-11-22 00:00:00",
+      "open": false
+    },
+    "3": {
+      "state": "published",
+      "title": "Test Scouts news",
+      "body": "<div>Test article please&nbsp;<strong>ignore<br><\/strong><br><\/div><blockquote>Famous line goes here<\/blockquote><div><br><\/div><ol><li>one<\/li><li>two<ul><li>thing<\/li><li>other thing<\/li><\/ul><\/li><li>three<\/li><\/ol><div><br><\/div><div><br><\/div>",
+      "updated": "2015-11-25 20:07:47",
+      "unit": "scouts",
+      "outline": "Testing Scouts",
+      "created": "2015-11-22 00:00:00",
+      "open": false
+    },
+    "4": {
+      "state": "deleted",
+      "title": "Beavers Test",
+      "body": "<div>Testing<\/div>",
+      "updated": "2015-11-25 20:08:00",
+      "unit": "beavers",
+      "outline": "Article for testing",
+      "created": "2015-11-25 00:00:08",
+      "open": false
+    },
+    "5": {
+      "state": "editing",
+      "title": "Test Article",
+      "body": "<div><strong>Test<br><\/strong><strong><em>Test<\/em><\/strong><em><br>Test<br><\/em><del>Test<\/del><br><br><\/div><blockquote>Test<\/blockquote><ul><li>Test<\/li><\/ul><ol><li>test<\/li><li>test<ol><li>test<\/li><\/ol><\/li><\/ol><ul><li>test<\/li><\/ul><pre>Test<\/pre>",
+      "updated": "2015-11-25 21:22:07",
+      "unit": "general",
+      "outline": "New test article",
+      "created": "2015-11-25 21:18:41",
+      "open": false
+    },
+    "6": {
+      "state": "published",
+      "title": "Cubs FAQ",
+      "body": "<div><strong>Where does this badge go?<br><\/strong>On your uniform<br><br><strong>What nights do we meet<br><\/strong>Wednesday and Thursday<\/div>",
+      "updated": "2015-12-01 20:47:36",
+      "unit": "cubs",
+      "outline": "Frequently asked questions",
+      "created": "2015-11-26 11:46:46",
+      "open": false
+    }
+  }
+}

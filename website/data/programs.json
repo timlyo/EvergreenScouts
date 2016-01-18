@@ -1,0 +1,18 @@
+{
+  "_default": {
+    "1": {
+      "name": "Woden",
+      "events": [
+        ["2015-10-21", "Scavenger Hunt", ""], ["2015-10-07", "Walk", "Bring Coat"], ["2015-10-28", "Thing", "notes"]
+      ]
+    },
+    "2": {
+      "name": "Thor",
+      "events": [["2015-10-05", "Climbing", ""], ["2015-10-07", "Walk", "notes"]]
+    },
+    "3": {
+      "name": "Scouts",
+      "events": [["2015-10-05", "Climbing", ""], ["2015-10-12", "Walk", "notes"]]
+    }
+  }
+}

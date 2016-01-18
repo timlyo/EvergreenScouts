@@ -1,17 +1,23 @@
+import hashlib
+
 from website import app
 
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, send_file
 import flask
 from flask_login import login_required
 import datetime
 from website import app, forms, data
 
-from flaskext.uploads import secure_filename
+from flaskext.uploads import secure_filename, IMAGES
 import os
 
 
-@app.route("/index")
+def is_image_file(filename: str) -> bool:
+	return "." in filename and filename.rsplit(".", 1)[1] in IMAGES
+
+
 @app.route("/")
+@app.route("/index")
 def index():
 	news = reversed(data.get_latest_news(5))
 	return render_template("index.html", news=news)
@@ -24,12 +30,24 @@ def upload():
 	if request.method == "POST":
 		file = request.files["file"]
 		if file:
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-			# TODO add database updates
-			return redirect("/")  # TODO change to album page
+			if not is_image_file(file.filename):
+				print("Error", file, " not image")
+				return
+
+			data.save_image(file)
 
 	return render_template("upload.html")
+
+
+@app.route("/images")
+def images():
+	return render_template("images.html")
+
+
+@app.route("/images/<id>")
+def get_image(id):
+	print(os.getcwd())
+	return flask.send_from_directory(app.config["IMAGE_DIRECTORY"], id)
 
 
 @app.route("/<group>/badges")
@@ -39,7 +57,7 @@ def badges(group):
 
 
 @app.route("/<group>/program")
-def get_program(group):
+def show_program(group):
 	if group == "cubs":
 		thor_calendar = data.get_program("Thor")
 		woden_calendar = data.get_program("Woden")

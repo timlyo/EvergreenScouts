@@ -7,9 +7,15 @@ from tinydb import TinyDB, Query, where
 
 import datetime
 
-program_db = TinyDB("data/programs.json")
-users_db = TinyDB("data/users.json")
-news_db = TinyDB("data/news.json")
+import hashlib
+from werkzeug.datastructures import FileStorage
+
+from website import app
+
+program_db = TinyDB(app.config["DATA_DIRECTORY"] + "/programs.json")
+users_db = TinyDB(app.config["DATA_DIRECTORY"] + "/users.json")
+news_db = TinyDB(app.config["DATA_DIRECTORY"] + "/news.json")
+images_db = TinyDB(app.config["DATA_DIRECTORY"] + "/images.json")
 
 pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
 
@@ -71,7 +77,7 @@ def get_user(id: str):
 
 
 # news stuff
-def get_latest_news(count: int = None, unit="", all=False):
+def get_latest_news(start: int = 0, end: int = None, unit="", all=False):
 	result = None
 	if all:
 		result = news_db.all()
@@ -80,8 +86,8 @@ def get_latest_news(count: int = None, unit="", all=False):
 	else:
 		result = news_db.search((where("unit") == unit) & (where("state") == "published"))
 
-	if count:
-		return result[:count]
+	if end:
+		return result[start:end]
 	else:
 		return result
 
@@ -116,7 +122,7 @@ def update_article(id, body=None, title=None, outline=None, unit=None, state=Non
 
 	if state in ["deleted", "published", "editing"]:
 		data["state"] = state
-	elif not None:
+	elif state is not None:
 		print("Invalid value for state", state, file=sys.stderr)
 
 	print("Update to article", id)
@@ -128,3 +134,16 @@ def update_article(id, body=None, title=None, outline=None, unit=None, state=Non
 def create_new_article(unit=None) -> int:
 	date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 	news_db.insert({"created": date, "updated": date, "state": "editing"})
+
+
+# images
+def save_image(image: FileStorage):
+	# TODO convert to jpg
+	# TODO create thumbnail
+	# TODO add to database
+
+	name = hashlib.md5(image.read()).hexdigest() + ".jpg"
+	image.seek(0)
+	image.save(app.config["IMAGE_DIRECTORY"] + name)
+
+	images_db.insert({"name": name})
