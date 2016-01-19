@@ -5,7 +5,6 @@ from website import app
 from flask import render_template, request, flash, send_file
 import flask
 from flask_login import login_required
-import datetime
 from website import app, forms, data
 
 from flaskext.uploads import secure_filename, IMAGES
@@ -82,20 +81,31 @@ def contact(group):
 @app.route("/cubs")
 def cubs():
 	news = data.get_latest_news(5, unit="cubs")
-	return render_template("cubs.html", group="cubs", news=news)
+	return render_template("group/cubs.html", group="cubs", news=news)
 
 
 @app.route("/scouts")
 def scouts():
 	news = data.get_latest_news(5, unit="scouts")
-	return render_template("scouts.html", group="scouts", news=news)
+	return render_template("group/scouts.html", group="scouts", news=news)
 
 
 @app.route("/beavers")
 def beavers():
 	news = data.get_latest_news(5, unit="beavers")
-	print(news)
-	return render_template("beavers.html", group="beavers", news=news)
+	return render_template("group/beavers.html", group="beavers", news=news)
+
+
+@app.route("/explorers")
+def explorers():
+	news = data.get_latest_news(5, unit="explorers")
+	return render_template("group/explorers.html", group="beavers", news=news)
+
+
+@app.route("/network")
+def network():
+	news = data.get_latest_news(5, unit="network")
+	return render_template("group/network.html", group="beavers", news=news)
 
 
 @app.route("/admin")

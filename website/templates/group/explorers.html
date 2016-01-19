@@ -1,0 +1,18 @@
+{% extends "partials/layout.html" %}
+
+{% block headerAdditionals %}
+    <link href='{{url_for("static", filename="css/landing.css")}}' rel='stylesheet' type='text/css'>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-sm-8 card">
+        <img src="static/img/cubs.png" class="img">
+        <h1>Evergreens Explorers</h1>
+
+        Bromsgrove based Explorer group
+    </div>
+
+    {% include "partials/latestNews.html" %}
+</div>
+{% endblock %}
