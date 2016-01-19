@@ -7,19 +7,20 @@ All routes accept parameters in the form `<route>?parameter=value&parameter2=val
 ###/api/news
 
 Route to search the news, accepts the parameters:
-    * start: int - record number to start from
-    * end: int - record number to end at
-    * all: bool - quick switch to get all
+
+* start: int - record number to start from
+* end: int - record number to end at
+* all: bool - quick switch to get all
     
 
 ###/api/program
 
 Route to get program information
 
-**Get**
+####Get
 Return the program
 
-**POST**
+####POST
 Update the program
 
 Both methods accept a name parameter to specify which program to update
@@ -28,7 +29,12 @@ Both methods accept a name parameter to specify which program to update
 
 Route to get images
 
-**Get**
+####Get
 Return the image
 
-Accepts an id parameter
+####Parameters
+
+* id - id of the file to load
+* file - image file to load, extension not needed
+* date - accepts a single date to load or a range in iso format
+* location - not yet implemented

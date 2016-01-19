@@ -5,7 +5,7 @@ import flask
 from flask_login import login_required
 from website import app, data
 
-from flask.ext.uploads import secure_filename, IMAGES
+from flask.ext.uploads import IMAGES, secure_filename
 
 
 def is_image_file(filename: str) -> bool:
@@ -31,6 +31,7 @@ def upload_image():
 				return "Not an image", 418
 
 			data.save_image(file)
+			return "ok"
 
 	return render_template("upload.html")
 

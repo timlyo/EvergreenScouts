@@ -1,3 +1,4 @@
+import os
 import ujson as json
 
 import sys
@@ -5,7 +6,7 @@ import urllib3
 import certifi
 from tinydb import TinyDB, Query, where
 
-import PIL
+from PIL import Image
 
 import datetime
 
@@ -128,22 +129,36 @@ def create_new_article(unit=None) -> int:
 
 
 # images
-def save_image(image: FileStorage):
+def save_image(file: FileStorage):
 	# TODO convert to jpg
 	# TODO create thumbnail
 	# TODO add to database
-	store_image(image)
-	thumbnail
+
+	thumbnail_size = 240, 240
+	directory = app.config["IMAGE_DIRECTORY"]
+
+	# Compute hash
+	file_hash = hashlib.md5(file.read()).hexdigest()
+	file_name = file_hash + ".jpg"
+	thumbnail_name = file_hash + "_thumb.jpg"
+	file.seek(0)
+
+	# save as jpg for size efficiency
+	image = Image.open(file)
+	image.save(os.path.join(directory, file_name))
+	print("Saved image as", file_hash)
+
+	# create thumbnail
+	image = Image.open(os.path.join(directory, file_name))
+	image.thumbnail(thumbnail_size)
+	image.save(os.path.join(directory, thumbnail_name))
+
+	store_image(file_hash, thumbnail_name)
 
 
-def store_image(image):
-	""" Insert image into the database
-	:param image: file to store
-	:return:
-	"""
+def store_image(file_hash: str, thumbnail_hash: str):
+	""" Insert image into the database """
 
-	name = hashlib.md5(image.read()).hexdigest() + ".jpg"
-	image.seek(0)
-	image.save(app.config["IMAGE_DIRECTORY"] + name)
+	date = datetime.datetime.now().isoformat()
 
-	images_db.insert({"name": name})
+	images_db.insert({"file": file_hash, "date": date, "thumbnail": thumbnail_hash})
