@@ -1,4 +1,4 @@
-function get_current_date(){
+function get_current_date() {
     var date = new Date();
     return date.toISOString().split("T")[0];
 }
@@ -7,7 +7,8 @@ var Program = React.createClass({
     getInitialState: function () {
         return {
             events: [],
-            name: "Thor"
+            name: "",
+            posting: false
         };
     },
     componentDidMount: function () {
@@ -26,16 +27,24 @@ var Program = React.createClass({
     addWeek: function () {
         this.setState({events: this.state.events.concat([["Date", "Event", "Notes"]])});
     },
-    //saveProgram: function () {
-    //    $.post({
-    //        url:
-    //    })
-    //    this.state
-    //},
+    saveProgram: function () {
+        this.state.posting = true;
+        console.log(this.state.events);
+        $.ajax({
+            url: this.props.url,
+            type: "POST",
+            data: {"events": JSON.stringify(this.state.events)},
+            "dataType": "json",
+
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    },
     render: function () {
         var weeks = this.state.events.map(function (week, index) {
             return (
-                <tr>
+                <tr key={index}>
                     <td>{week[0]}</td>
                     <td>{week[1]}</td>
                     <td>{week[2]}</td>
@@ -55,19 +64,19 @@ var Program = React.createClass({
 
                 </table>
                 <br/>
-                <a className="btn btn-info" onClick={this.addWeek}>Save</a>
+                <a className="btn btn-info" onClick={this.saveProgram}>Save</a>
             </div>
         )
     }
 });
 
 var WeekForm = React.createClass({
-    getInitialState: function(){
-      return {
-          "date": get_current_date(),
-          "activity": "",
-          "notes": ""
-      }
+    getInitialState: function () {
+        return {
+            "date": get_current_date(),
+            "activity": "",
+            "notes": ""
+        }
     },
     render: function () {
         return (
@@ -86,6 +95,7 @@ var WeekForm = React.createClass({
 });
 
 let url = "/api/program?name=" + programName;
+console.log(url);
 
 ReactDOM.render(
     <Program url={url}/>,

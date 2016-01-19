@@ -1,3 +1,5 @@
+import json
+
 from website import app, data
 
 from flask import request, jsonify
@@ -12,11 +14,22 @@ def search_news():
 	return jsonify(articles=latest)
 
 
-@app.route("/api/program")
+@app.route("/api/program", methods=["GET"])
 def get_program():
 	name = request.args.get("name")
 
-	print("name:" + name)
+	print("GET to program " + name)
 
 	program = data.get_program(name)
 	return jsonify(program)
+
+
+@app.route("/api/program", methods=["POST"])
+def set_program():
+	name = request.args.get("name")
+
+	print("POST to program " + name)
+	program = json.loads(request.form["events"])
+	data.save_program(program, name)
+
+	return "ok"

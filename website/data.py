@@ -35,22 +35,11 @@ def get_program(name: str):
 		print("len", len(result))
 
 
-def save_program_from_form(data: dict, name: str):
-	"""takes the data in the format that the form gives and saves to json"""
+def save_program(data: dict, name: str):
+	"""takes the data from a dictionary and saves to disk"""
 	print("Saving", name, "program")
-
-	events = []
-	for week in data["weeks"]:
-		date = week["date"].strftime("%Y-%m-%d")
-		activity = week["activity"]
-		notes = week["notes"]
-
-		events.append([date, activity, notes])
-
-		query = Query()
-		result = program_db.search(query.name == name)
-		if len(result) > 0:
-			program_db.update({"events": events}, query.name == name)
+	print(data)
+	program_db.update({"events": data}, where("name") == name)
 
 
 def get_json(file: str) -> dict:

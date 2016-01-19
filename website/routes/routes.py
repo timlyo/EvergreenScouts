@@ -108,22 +108,7 @@ def admin():
 	return render_template("admin/admin.html", program_list=program_list, articles=articles, news_count=news_count)
 
 
-@app.route("/editProgram/<name>", methods=["POST", "GET"])
+@app.route("/editProgram/<name>", methods=["GET"])
 @login_required
 def edit_program(name):
-	print("edited", name, "program")
-
-	program_data = data.get_program(name)
-
-	form = forms.ProgramForm(request.form)
-	if request.method == "POST":
-		data.save_program_from_form(form.data, name)
-		flash("Saved form changes")
-
-	else:
-		for week in program_data["events"]:
-			str_date = [int(x) for x in week[0].split("-")]
-			date = datetime.date(str_date[0], str_date[1], str_date[2])
-			form.weeks.append_entry({"date": date, "activity": week[1], "notes": week[2]})
-
-	return render_template("admin/editProgram.html", name=name, program_data=program_data, form=form)
+	return render_template("admin/editProgram.html", name=name)
