@@ -78,14 +78,20 @@ var WeekForm = React.createClass({
             "notes": ""
         }
     },
+    onActivityChange: function(event){
+        this.setState({date: event.activity.value});
+    },
+    onNotesChange: function(event){
+        this.setState({date: event.activity.value});
+    },
     render: function () {
         return (
             <div id="weekForm">
                 <form className="form-inline">
                     <fieldset className="form-group">
                         <input type="date" className="form-control" value={this.state.date}/>
-                        <input type="text" className="form-control" value={this.state.activity} placeholder="Activity"/>
-                        <input type="text" className="form-control" value={this.state.notes} placeholder="Notes"/>
+                        <input type="text" className="form-control" value={this.state.activity} onChange={this.state.onActivityChange} placeholder="Activity"/>
+                        <input type="text" className="form-control" value={this.state.notes} onChange={this.state.onNotesChange} placeholder="Notes"/>
                         <input type="button" onClick={this.props.addWeek} value="Add" className="btn btn-info"/>
                     </fieldset>
                 </form>
