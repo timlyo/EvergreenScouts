@@ -130,28 +130,30 @@ def create_new_article(unit=None) -> int:
 
 # images
 def save_image(file: FileStorage):
-	# TODO convert to jpg
-	# TODO create thumbnail
-	# TODO add to database
-
 	thumbnail_size = 240, 240
 	directory = app.config["IMAGE_DIRECTORY"]
 
 	# Compute hash
 	file_hash = hashlib.md5(file.read()).hexdigest()
-	file_name = file_hash + ".jpg"
-	thumbnail_name = file_hash + "_thumb.jpg"
 	file.seek(0)
 
-	# save as jpg for size efficiency
-	image = Image.open(file)
-	image.save(os.path.join(directory, file_name))
-	print("Saved image as", file_hash)
+	file_name = file_hash + ".jpg"
+	file_path = os.path.join(directory, file_name)
+	thumbnail_name = file_hash + "_thumb.jpg"
+	thumbnail_path = os.path.join(directory, thumbnail_name)
 
-	# create thumbnail
-	image = Image.open(os.path.join(directory, file_name))
-	image.thumbnail(thumbnail_size)
-	image.save(os.path.join(directory, thumbnail_name))
+	if not os.path.isfile(file_path):
+		# save as jpg for size efficiency
+		image = Image.open(file)
+		image.save(file_path)
+		print("Saved image as", file_path)
+
+	if not os.path.isfile(thumbnail_path):
+		# create thumbnail
+		image = Image.open(os.path.join(directory, file_name))
+		image.thumbnail(thumbnail_size, Image.ANTIALIAS)
+		image.save(os.path.join(directory, thumbnail_name))
+		print("saved thumbnail as", thumbnail_path)
 
 	store_image(file_hash, thumbnail_name)
 
