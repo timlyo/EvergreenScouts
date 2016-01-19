@@ -27,7 +27,7 @@ var Program = React.createClass({
             }.bind(this)
         });
     },
-    deleteElement: function(index, event){
+    deleteElement: function (index, event) {
         this.setState({
             events: this.state.events.filter((_, i) => i != index)
         });
@@ -46,10 +46,16 @@ var Program = React.createClass({
         let date = this.state.date;
         let activity = this.state.activity;
         let notes = this.state.notes;
-        this.setState({events: this.state.events.concat([[date, activity, notes]])});
+        if (activity != "") {
+            this.setState({events: this.state.events.concat([[date, activity, notes]])});
+        }
+    },
+    setPostingStatus: function (state) {
+        this.setState({"posting": state});
     },
     saveProgram: function () {
-        this.state.posting = true;
+        let setPostingStatus = this.setPostingStatus;
+        setPostingStatus(true);
         console.log(this.state.events);
         $.ajax({
             url: this.props.url,
@@ -58,7 +64,11 @@ var Program = React.createClass({
             "dataType": "json",
 
             success: function (result) {
+                console.log("save result:");
                 console.log(result);
+            },
+            complete: function(){
+                setPostingStatus(false);
             }
         });
     },
@@ -73,40 +83,51 @@ var Program = React.createClass({
             );
         });
 
+        var button;
+        if (this.state.posting) {
+            button = <a className="btn btn-info" disabled>Saving</a>;
+        } else {
+            button = <a className="btn btn-info" onClick={this.saveProgram}>Save</a>;
+        }
+
         return (
             <div>
                 < WeekForm addWeek={this.addWeek}
-                           onDateChange={this.onDateChange} onActivityChange={this.onActivityChange} onNotesChange={this.onNotesChange}
-                           date={this.state.date} activity={this.state.activity} notes={this.state.notes}/>
+                           onDateChange={this.onDateChange} onActivityChange={this.onActivityChange}
+                           onNotesChange={this.onNotesChange}
+                           date={this.state.date} activity={this.state.activity} notes={this.state.notes}
+                           posting={this.state.posting}
+                />
                 <br/>
                 <table className="table">
                     <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Activity</th>
-                            <th>Notes</th>
-                        </tr>
+                    <tr>
+                        <th>Date</th>
+                        <th>Activity</th>
+                        <th>Notes</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {weeks}
+                    {weeks}
                     </tbody>
 
                 </table>
                 <br/>
-                <a className="btn btn-info" onClick={this.saveProgram}>Save</a>
+                {button}
             </div>
         )
     }
 });
 
 var Week = React.createClass({
-    render: function(){
-        return(
+    render: function () {
+        return (
             <tr key={this.props.index}>
                 <td>{this.props.date}</td>
                 <td>{this.props.activity}</td>
                 <td>{this.props.notes}</td>
-                <td><a onClick={this.props.delete}><span className="glyphicon glyphicon-trash" /> </a></td>
+                <td><a onClick={this.props.delete} title="Delete week"><span className="glyphicon glyphicon-trash"/>
+                </a></td>
             </tr>
         )
     }
