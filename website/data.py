@@ -5,6 +5,8 @@ import urllib3
 import certifi
 from tinydb import TinyDB, Query, where
 
+import PIL
+
 import datetime
 
 import hashlib
@@ -130,6 +132,15 @@ def save_image(image: FileStorage):
 	# TODO convert to jpg
 	# TODO create thumbnail
 	# TODO add to database
+	store_image(image)
+	thumbnail
+
+
+def store_image(image):
+	""" Insert image into the database
+	:param image: file to store
+	:return:
+	"""
 
 	name = hashlib.md5(image.read()).hexdigest() + ".jpg"
 	image.seek(0)

@@ -1,14 +1,11 @@
-import hashlib
-
 from website import app
 
-from flask import render_template, request, flash, send_file
+from flask import render_template, request
 import flask
 from flask_login import login_required
-from website import app, forms, data
+from website import app, data
 
-from flaskext.uploads import secure_filename, IMAGES
-import os
+from flask.ext.uploads import secure_filename, IMAGES
 
 
 def is_image_file(filename: str) -> bool:
@@ -24,14 +21,14 @@ def index():
 
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
-def upload():
+def upload_image():
 	print("upload")
 	if request.method == "POST":
 		file = request.files["file"]
 		if file:
 			if not is_image_file(file.filename):
 				print("Error", file, " not image")
-				return
+				return "Not an image", 418
 
 			data.save_image(file)
 
@@ -41,12 +38,6 @@ def upload():
 @app.route("/images")
 def images():
 	return render_template("images.html")
-
-
-@app.route("/images/<id>")
-def get_image(id):
-	print(os.getcwd())
-	return flask.send_from_directory(app.config["IMAGE_DIRECTORY"], id)
 
 
 @app.route("/<group>/badges")

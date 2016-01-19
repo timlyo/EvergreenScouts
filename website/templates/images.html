@@ -9,89 +9,59 @@
 
 {% block body %}
 <div class="container">
-    <div class="col-sm-12">
-        <div class="card">
+    <div class="col-md-8">
+        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="pswp__bg"></div>
+            <div class="pswp__scroll-wrap">
 
-            <!-- Root element of PhotoSwipe. Must have class pswp. -->
-            <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
 
-                <!-- Background of PhotoSwipe.
-                     It's a separate element as animating opacity is faster than rgba(). -->
-                <div class="pswp__bg"></div>
+                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                <div class="pswp__ui pswp__ui--hidden">
 
-                <!-- Slides wrapper with overflow:hidden. -->
-                <div class="pswp__scroll-wrap">
+                    <div class="pswp__top-bar">
 
-                    <!-- Container that holds slides.
-                        PhotoSwipe keeps only 3 of them in the DOM to save memory.
-                        Don't modify these 3 pswp__item elements, data is added later on. -->
-                    <div class="pswp__container">
-                        <div class="pswp__item"></div>
-                        <div class="pswp__item"></div>
-                        <div class="pswp__item"></div>
-                    </div>
+                        <!--  Controls are self-explanatory. Order can be changed. -->
 
-                    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-                    <div class="pswp__ui pswp__ui--hidden">
+                        <div class="pswp__counter"></div>
 
-                        <div class="pswp__top-bar">
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
 
-                            <!--  Controls are self-explanatory. Order can be changed. -->
+                        <button class="pswp__button pswp__button--share" title="Share"></button>
 
-                            <div class="pswp__counter"></div>
+                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
 
-                            <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
 
-                            <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                            <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                            <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                            <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                            <!-- element will get class pswp__preloader--active when preloader is running -->
-                            <div class="pswp__preloader">
-                                <div class="pswp__preloader__icn">
-                                    <div class="pswp__preloader__cut">
-                                        <div class="pswp__preloader__donut"></div>
-                                    </div>
+                        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                        <!-- element will get class pswp__preloader--active when preloader is running -->
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                            <div class="pswp__share-tooltip"></div>
-                        </div>
-
-                        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-                        </button>
-
-                        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-                        </button>
-
-                        <div class="pswp__caption">
-                            <div class="pswp__caption__center"></div>
-                        </div>
                     </div>
+
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+                    </button>
+
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+
                 </div>
-            </div>
-
-            <div class="my-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-
-                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                    <a href="/images/sheepy.jpg" itemprop="contentUrl" data-size="600x400">
-                        <img src="/images/sheepy.jpg" itemprop="thumbnail" alt="Image description" class="img-responsive"/>
-                    </a>
-                    <figcaption itemprop="caption description">Sheep</figcaption>
-                </figure>
-
-                <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                    <a href="/images/4a7a12b702e0bd17ac08955bab7212c7.jpg" itemprop="contentUrl" data-size="600x400">
-                        <img src="/images/4a7a12b702e0bd17ac08955bab7212c7.jpg" itemprop="thumbnail" alt="Image description"/>
-                    </a>
-                    <figcaption itemprop="caption description">Image caption</figcaption>
-                </figure>
-
 
             </div>
 
@@ -106,12 +76,12 @@
         // build items array
         var items = [
             {
-                src: 'https://placekitten.com/1000/400',
-                w: 1000,
-                h: 400
+                src: '/api/images?id=914e3b358a6bd16d3f1677f29bc9de42.jpg',
+                w: 800,
+                h: 500
             },
             {
-                src: 'https://placekitten.com/1200/900',
+                src: '/api/images?id=4a7a12b702e0bd17ac08955bab7212c7.jpg',
                 w: 1200,
                 h: 900
             }
@@ -126,7 +96,7 @@
 
         // Initializes and opens PhotoSwipe
         var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
-//        gallery.init();
+        gallery.init();
     </script>
 
 </div>

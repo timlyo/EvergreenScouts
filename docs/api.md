@@ -1,5 +1,7 @@
 # Api Documentation
 
+All routes accept parameters in the form `<route>?parameter=value&parameter2=value2`
+
 ## Routes
 
 ###/api/news
@@ -21,3 +23,12 @@ Return the program
 Update the program
 
 Both methods accept a name parameter to specify which program to update
+
+###/api/images
+
+Route to get images
+
+**Get**
+Return the image
+
+Accepts an id parameter

@@ -3,7 +3,7 @@ import time
 
 from website import app, data
 
-from flask import request, jsonify
+from flask import request, jsonify, send_from_directory
 
 
 @app.route("/api/news")
@@ -34,3 +34,9 @@ def set_program():
 	data.save_program(program, name)
 
 	return "ok"
+
+
+@app.route("/api/images", methods=["GET"])
+def get_image():
+	id = request.args.get("id")
+	return send_from_directory(app.config["IMAGE_DIRECTORY"], id)
