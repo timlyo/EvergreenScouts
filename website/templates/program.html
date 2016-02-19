@@ -5,28 +5,33 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="col-sm-8 card">
-        {% for program in programs %}
+<div class="ui grid container">
+    <div class="twelve wide column">
+        {% include "partials/tabs.html" %}
+        <div class="ui bottom attached active tab segment">
+            {% for program in programs %}
             {% if program["name"] %}
-                <h2>{{ program["name"] }}</h2>
+            <h2>{{ program["name"] }}</h2>
             {% endif %}
 
-            <table class="table">
+            <table class="ui celled table">
+                <thead>
                 <tr>
                     <th>Date</th>
                     <th>Activity</th>
                     <th>Notes</th>
                 </tr>
+                </thead>
                 {% for event in program["events"] %}
-                    <tr>
-                        <td>{{event[0] | format_date}}</td>
-                        <td>{{event[1]}}</td>
-                        <td>{{event[2]}}</td>
-                    </tr>
+                <tr>
+                    <td>{{event[0] | format_date}}</td>
+                    <td>{{event[1]}}</td>
+                    <td>{{event[2]}}</td>
+                </tr>
                 {% endfor %}
             </table>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
     {% include "partials/latestNews.html" %}
 </div>

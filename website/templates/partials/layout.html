@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block header %}
     <meta charset="utf-8">
 
     <meta name=viewport content="width=device-width, initial-scale=1">
 
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
-    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css' rel='stylesheet'
+          type='text/css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
 
     <link href='{{url_for("static", filename="css/style.css")}}' rel='stylesheet' type='text/css'>
+
     <meta charset='UTF-8'>
     <meta content='Evergreens scouts' name='description'>
     <meta content='Scouts' name='keywords'>
     <meta content='Evergreens Scouts' name='author'>
 
     {% block title %} <title>Evergreens Scouts</title> {% endblock %}
+
+    {% endblock %}
 
     {% block headerAdditionals %} {% endblock %}
 </head>
@@ -33,36 +36,44 @@
         {% if messages %}
             {% for category, message in messages %}
                 {% if category == "success" %}
-                    <div class="alert alert-success fade in" role="alert">
+                    <div class="ui success message" role="alert">
                 {% elif category == "warning" %}
-                    <div class="alert alert-warning fade in" role="alert">
-                {% elif category == "danger" %}
-                    <div class="alert alert-danger fade in" role="alert">
+                    <div class="ui warning message" role="alert">
+                {% elif category == "error" %}
+                    <div class="ui error message" role="alert">
                 {% else %}
-                    <div class="alert alert-info fade in" role="alert">
+                    <div class="ui message" role="alert">
                 {% endif %}
-                    {{ message }}
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            </div>
+                        {{ message }}
+                    </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
 </div>
 
-<br>
-
 {% block body %}
 {% endblock %}
 
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-  ga('create', 'UA-26741295-4', 'auto');
-  ga('send', 'pageview');
+    ga('create', 'UA-26741295-4', 'auto');
+    ga('send', 'pageview');
 
+</script>
+
+<script>
+    $('.ui.dropdown').dropdown();
 </script>
 </body>
 </html>

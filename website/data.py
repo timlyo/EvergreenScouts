@@ -38,6 +38,13 @@ def get_program(name: str):
 		print("len", len(result))
 
 
+def get_programs() -> list:
+	"""Return list of all programs"""
+	result = program_db.all()
+	print("programs", result)
+	return result
+
+
 def save_program(data: dict, name: str):
 	"""takes the data from a dictionary and saves to disk"""
 	print("Saving", name, "program")
@@ -142,9 +149,11 @@ def save_image(file: FileStorage):
 	thumbnail_name = file_hash + "_thumb.jpg"
 	thumbnail_path = os.path.join(directory, thumbnail_name)
 
+	image = Image.open(file)
+	size = image.size
+
 	if not os.path.isfile(file_path):
 		# save as jpg for size efficiency
-		image = Image.open(file)
 		image.save(file_path)
 		print("Saved image as", file_path)
 
@@ -155,12 +164,47 @@ def save_image(file: FileStorage):
 		image.save(os.path.join(directory, thumbnail_name))
 		print("saved thumbnail as", thumbnail_path)
 
-	store_image(file_hash, thumbnail_name)
+	store_image(file_hash, size)
 
 
-def store_image(file_hash: str, thumbnail_hash: str):
-	""" Insert image into the database """
+def store_image(file_hash: str, size: tuple):
+	""" Insert image into the database
+	:param file_hash: hash of the file
+	:param size: tuple of image size (x, y)
+	"""
 
 	date = datetime.datetime.now().isoformat()
 
-	images_db.insert({"file": file_hash, "date": date, "thumbnail": thumbnail_hash})
+	images_db.insert({
+		"file": file_hash,
+		"date": date,
+		"size": size,
+		"name": ""
+	})
+
+
+def get_images(id_list=None, file_list=None, date=None, limit=None, location=None, get_all=False) -> list:
+	if not limit:
+		limit = 50
+
+	if get_all:
+		return images_db.all()[:limit]
+
+	images = []
+	if id_list:
+		for id in id_list.split(","):
+			try:
+				id = int(id)
+			except ValueError:
+				continue
+			result = images_db.get(eid=id)
+			if result:
+				images.append(result)
+
+	if file_list:
+		for file in file_list.split(","):
+			result = images_db.search(where("file") == file)
+			if result:
+				images.append(result)
+
+	return images[:limit]

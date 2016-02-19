@@ -1,28 +1,39 @@
 {% extends "partials/layout.html" %}
-{% block headerAdditionals %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css" />
+{% block header%}
+    {{super()}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
 {% endblock  %}
 
 {% block body %}
-<div class="container">
-    <div class="col-sm-8">
-        <div class="card">
+<div class="ui grid container">
+    <div class="twelve wide column">
+        <div class="ui segment">
             <h1>Evergreens Scouts</h1>
 
             <p>Bromsgrove based scout</p>
-        </div>
+            <p>Lorem ipsum dolor sit amet, labores meliore pericula ex duo. Melius assentior sit in, an mel unum
+                eripuit, per cu aeque quodsi ornatus. Sed ubique omnesque ei, sea ut nostro alterum abhorreant, stet
+                falli per te. Mea iracundia ullamcorper conclusionemque at. Pri esse inimicus sapientem et, doctus
+                intellegebat at vel.</p>
 
-        <div class="card">
-            <h2>Find us</h2>
-            <div id="map">
-
-            </div>
+            <p>Quo aliquando accommodare at, soluta ancillae ius no, at animal vidisse elaboraret vim. Cibo intellegebat
+                in mei, mel detracto patrioque interpretaris an. Has ex dolor ignota oblique, audiam pertinax eos at.
+                Graeci adipisci vel et, vel ad solum iracundia. Ut mel ubique efficiantur, primis facilisis ea eos.</p>
         </div>
     </div>
 
     {% include "partials/latestNews.html" %}
 
+    <div class="twelve wide column">
+        <div class="ui segment">
+
+            <h2>Find us</h2>
+            <div id="map"></div>
+
+            </div>
+        </div>
+</div>
     <script>
         lat = 52.33555;
         lon = -2.07110;
@@ -33,7 +44,7 @@
         }).addTo(map);
 
         L.marker([lat, lon]).addTo(map)
-            .bindPopup('Evergreens Scout Hut');
+                .bindPopup('Evergreens Scout Hut');
     </script>
 </div>
 {% endblock %}

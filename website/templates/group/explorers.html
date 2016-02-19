@@ -1,18 +1,28 @@
 {% extends "partials/layout.html" %}
 
 {% block headerAdditionals %}
-    <link href='{{url_for("static", filename="css/landing.css")}}' rel='stylesheet' type='text/css'>
+<link href='{{url_for("static", filename="css/landing.css")}}' rel='stylesheet' type='text/css'>
 {% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="col-sm-8 card">
-        <img src="static/img/cubs.png" class="img">
-        <h1>Evergreens Explorers</h1>
+<div class="ui grid container">
+    <div class="twelve wide column">
+        {% include "partials/tabs.html" %}
+        <div class="ui bottom attached active tab segment">
+            <div class="ui grid">
+                <div class="five wide column">
+                    <img src="static/img/cubs.png" class="ui medium image">
+                </div>
 
-        Bromsgrove based Explorer group
+                <div class="seven wide column">
+                    <h1>Evergreens Explorers</h1>
+
+
+                    Bromsgrove based Explorer group
+                </div>
+            </div>
+        </div>
+
+        {% include "partials/latestNews.html" %}
     </div>
-
-    {% include "partials/latestNews.html" %}
-</div>
-{% endblock %}
+    {% endblock %}

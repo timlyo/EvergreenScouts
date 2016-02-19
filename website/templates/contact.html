@@ -1,15 +1,18 @@
 {% extends "partials/layout.html" %}
 {% block headerAdditionals %}
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.5/leaflet.js"></script>
 {% endblock  %}
 
 {% block body %}
-<div class="container">
-    <div class="col-sm-8 card">
-        <h1>Evergreens Scouts</h1>
+<div class="ui grid container">
+    <div class="twelve wide column">
+        {% include "partials/tabs.html" %}
+        <div class="ui bottom attached active tab segment">
+            <h1>Evergreens Scouts</h1>
 
-        Phone Number: {{phone_number}}
+            Phone Number: {{phone_number}}
+        </div>
     </div>
 
     {% include "partials/latestNews.html" %}

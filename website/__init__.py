@@ -12,6 +12,8 @@ app.secret_key = "temp key"  # TODO change this
 app.jinja_env.filters["format_date"] = filters.format_date
 app.jinja_env.filters["format_date_readable"] = filters.format_date_readable
 app.jinja_env.filters["format_date_time"] = filters.format_date_time
+app.jinja_env.filters["active"] = filters.is_active
+app.jinja_env.filters["active_item"] = filters.is_active_item
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app.config["DATA_DIRECTORY"] = os.path.join(APP_ROOT, "data/")

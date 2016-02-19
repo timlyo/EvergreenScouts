@@ -23,3 +23,25 @@ def format_date(date: str, format="%c"):
 	except ValueError as e:
 		print("failed to format date: ", e, file=sys.stderr)
 		return date
+
+
+def is_active(name, term):
+	""" return the string "active" if name matches term
+	:param name: thing to match
+	:param term:
+	"""
+
+	if name == term:
+		return "active"
+
+
+def is_active_item(name, term):
+	""" same as is_active but returns "active item" if name==term and "item" if not
+	:param name: thing to match
+	:param term:
+	"""
+
+	if name == term:
+		return "active item"
+	else:
+		return "item"

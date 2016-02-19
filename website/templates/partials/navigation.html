@@ -1,76 +1,68 @@
-<nav class='navbar navbar-inverse navbar-fixed-top'>
-    <div class='container'>
-        <div class='navbar-header'>
-            <button class='navbar-toggle' data-target='.navbar-collapse' data-toggle='collapse' type='button'>
-                <span class='sr-only'>Toggle navigation</span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-                <span class='icon-bar'></span>
-            </button>
-        </div>
+<nav class="ui stackable top attached menu" id="navBar">
+    <a href='/' class="{{None | active_item(group)}}">Home</a>
+    <a href='/cubs' class="{{'cubs' | active_item(group)}}">Cubs</a>
+    <a href='/beavers' class="{{'beavers' | active_item(group)}}">Beavers</a>
+    <a href='/explorers' class="{{'explorers' | active_item(group)}}">Explorers</a>
+    <a href='/network' class="{{'network' | active_item(group)}}">Network</a>
+    <a href='/images' class="item">Images</a>
 
-        <div class="row">
-            <div class='collapse navbar-collapse' id='navbar'>
-                <a class='navbar-brand' href='/'>Evergreens</a>
-                <ul class='nav navbar-nav'>
-                    <li>
-                        <a href='/scouts'>Scouts</a>
-                    </li>
-                    <li>
-                        <a href='/cubs'>Cubs</a>
-                    </li>
-                    <li>
-                        <a href='/beavers'>Beavers</a>
-                    </li>
-                    <li>
-                        <a href='/explorers'>Explorers</a>
-                    </li>
-                    <li>
-                        <a href='/network'>Network</a>
-                    </li>
-                    <li>
-                        <a href='/images'>Images</a>
-                    </li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    {% if current_user.is_authenticated %}
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                {{ current_user.get_id() }}
-                                <span class="caret"></span>
-                            </a>
-
-                            <ul class="dropdown-menu">
-                                <li><a href="/admin">Admin</a></li>
-                                <li><a href="/logout">Logout</a></li>
-                                <li> <a href="/upload">Upload</a></li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href='/login'>Login</a>
-                        </li>
-                    {% endif %}
-                </ul>
-
-            </div>
-
-            <div class='collapse navbar-collapse' id="groupNav">
-                <ul class='nav navbar-nav'>
-                    {% if group == "cubs" %}
-                        {% include "partials/cubNavigation.html" %}
-                    {% endif %}
-
-                    {% if group == "scouts" %}
-                        {% include "partials/scoutNavigation.html" %}
-                    {% endif %}
-
-                    {% if group == "beavers" %}
-                        {% include "partials/beaverNavigation.html" %}
-                    {% endif %}
-                </ul>
+    <div class="right menu">
+        {% if current_user.is_authenticated %}
+        <div class="ui dropdown item">
+            {{ current_user.get_id() }}
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item" href="/admin">Admin</a>
+                <a class="item" href="/upload">Upload</a>
+                <div class="ui divider"></div>
+                <a class="item" href="/logout">Logout</a>
             </div>
         </div>
+        {% else %}
+        <a href="/login" class="item" id="loginButton">login</a> {% endif %}
     </div>
 </nav>
+
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        <p>Login</p>
+    </div>
+
+    <div class="content">
+        <form class="ui form" id="loginForm" method="POST" action="/login" role="login form">
+            <div class="inline field">
+                <label>User name</label>
+                <input type="text" name="user_name">
+            </div>
+            <div class="inline field">
+                <label>Password</label>
+                <input type="password" name="password">
+            </div>
+        </form>
+    </div>
+
+    <div class="actions">
+        <div class="ui black deny button">
+            Cancel
+        </div>
+        <input type="submit" form="loginForm" class="ui positive button">
+    </div>
+</div>
+
+<script>
+    //login script
+    var el = document.getElementById("loginButton");
+    if (el != null) {
+        el.onclick = function() {
+            $('.ui.modal')
+                .modal({
+                    onApprove: function() {
+                        $(".loginForm").submit();
+                    }
+                })
+                .modal('show');
+            return false; // stop redirect
+        }
+    }
+</script>

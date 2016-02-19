@@ -16,7 +16,7 @@ def is_image_file(filename: str) -> bool:
 @app.route("/index")
 def index():
 	news = reversed(data.get_latest_news(5))
-	return render_template("index.html", news=news)
+	return render_template("index.html", news=news, group=None)
 
 
 @app.route("/upload", methods=["GET", "POST"])
@@ -41,19 +41,27 @@ def images():
 	return render_template("images.html")
 
 
-@app.route("/<group>/badges")
-def badges(group):
-	print(group)
-	return render_template("badges.html", group=group, badges=badgeList[group])
+# @app.route("/<group>/badges")
+# def badges(group):
+# 	print(group)
+# 	return render_template("badges.html", group=group, badges=badgeList[group])
+
+
+@app.route("/<group>")
+def serve_group(group):
+	tab = "about"
+	news = data.get_latest_news(5, unit=group)
+	return render_template("group/{}.html".format(group), group=group, news=news, tab=tab)
 
 
 @app.route("/<group>/program")
 def show_program(group):
+	tab = "program"
 	if group == "cubs":
 		thor_calendar = data.get_program("Thor")
 		woden_calendar = data.get_program("Woden")
 
-		return render_template("program.html", group="cubs", programs=[thor_calendar, woden_calendar])
+		return render_template("program.html", group="cubs", programs=[thor_calendar, woden_calendar], tab=tab)
 	if group == "scouts":
 		program = data.get_program("Scouts")
 
@@ -64,40 +72,8 @@ def show_program(group):
 
 @app.route("/<group>/contact")
 def contact(group):
-	phone_number = None
-	if group == "cubs":
-		phone_number = data.get_user("thor")["phone"]
-	return render_template("contact.html", group=group, phone_number=phone_number)
-
-
-@app.route("/cubs")
-def cubs():
-	news = data.get_latest_news(5, unit="cubs")
-	return render_template("group/cubs.html", group="cubs", news=news)
-
-
-@app.route("/scouts")
-def scouts():
-	news = data.get_latest_news(5, unit="scouts")
-	return render_template("group/scouts.html", group="scouts", news=news)
-
-
-@app.route("/beavers")
-def beavers():
-	news = data.get_latest_news(5, unit="beavers")
-	return render_template("group/beavers.html", group="beavers", news=news)
-
-
-@app.route("/explorers")
-def explorers():
-	news = data.get_latest_news(5, unit="explorers")
-	return render_template("group/explorers.html", group="beavers", news=news)
-
-
-@app.route("/network")
-def network():
-	news = data.get_latest_news(5, unit="network")
-	return render_template("group/network.html", group="beavers", news=news)
+	tab = "contact"
+	return render_template("contact.html", group=group, tab=tab)
 
 
 @app.route("/admin")

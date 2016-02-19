@@ -1,14 +1,18 @@
 {% if news %}
-    <div class="col-sm-3 hidden-xs card">
+<div class="four wide right floated column">
+    <div class="ui segment">
         <h1>Latest News</h1>
         {% for article in news %}
-            <article>
-                <a href="news/{{article['eid']}}">
-                    <h4>{{article["title"]}} <small>{{article["created"] | format_date_readable}}</small></h4>
-                </a>
+        <article>
+            <a href="news/{{article['eid']}}">
+                <h4>{{article["title"]}}
+                    <small>{{article["created"] | format_date_readable}}</small>
+                </h4>
+            </a>
 
-                <p>{{article["outline"]}}</p>
-            </article>
+            <p>{{article["outline"]}}</p>
+        </article>
         {% endfor %}
     </div>
+</div>
 {% endif %}

@@ -9,86 +9,41 @@
 
 {% block body %}
 <div class="container">
-    <div class="col-md-8">
-        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="pswp__bg"></div>
-            <div class="pswp__scroll-wrap">
+    <div class="col-md-8 card">
 
-                <div class="pswp__container">
-                    <div class="pswp__item"></div>
-                    <div class="pswp__item"></div>
-                    <div class="pswp__item"></div>
-                </div>
 
-                <div class="pswp__ui pswp__ui--hidden">
-                    <div class="pswp__top-bar">
+        {% include "partials/gallery_header.html" %}
+        {% include "partials/latestNews.html" %}
 
-                        <div class="pswp__counter"></div>
-                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+        <script>
+            var pswpElement = document.querySelectorAll('.pswp')[0];
 
-                        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                        <!-- element will get class pswp__preloader--active when preloader is running -->
-                        <div class="pswp__preloader">
-                            <div class="pswp__preloader__icn">
-                                <div class="pswp__preloader__cut">
-                                    <div class="pswp__preloader__donut"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            // build items array
+            var items = [
+                {
+                    src: '/api/images?id=1',
+                    w: 800,
+                    h: 500
+                },
+                {
+                    src: '/api/images?id=3',
+                    w: 1200,
+                    h: 900
+                }
+            ];
 
-                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                        <div class="pswp__share-tooltip"></div>
-                    </div>
+            // define options (if needed)
+            var options = {
+                // optionName: 'option value'
+                // for example:
+                index: 0 // start at first slide
+            };
 
-                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            // Initializes and opens PhotoSwipe
+            var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery.init();
+        </script>
 
-                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-                    </button>
-
-                    <div class="pswp__caption">
-                        <div class="pswp__caption__center"></div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
     </div>
-
-    {% include "partials/latestNews.html" %}
-
-    <script>
-        var pswpElement = document.querySelectorAll('.pswp')[0];
-
-        // build items array
-        var items = [
-            {
-                src: '/api/images?id=914e3b358a6bd16d3f1677f29bc9de42.jpg',
-                w: 800,
-                h: 500
-            },
-            {
-                src: '/api/images?id=4a7a12b702e0bd17ac08955bab7212c7.jpg',
-                w: 1200,
-                h: 900
-            }
-        ];
-
-        // define options (if needed)
-        var options = {
-            // optionName: 'option value'
-            // for example:
-            index: 0 // start at first slide
-        };
-
-        // Initializes and opens PhotoSwipe
-        var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
-        gallery.init();
-    </script>
-
+    {% endblock %}
 </div>
-{% endblock %}
