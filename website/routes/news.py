@@ -14,7 +14,6 @@ def news(id):
 	return render_template("news.html", article=article)
 
 
-
 @login_required
 @app.route("/news/<id>/edit", methods=["GET", "POST"])
 def edit_news(id):

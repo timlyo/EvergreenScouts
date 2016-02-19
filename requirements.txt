@@ -1,0 +1,11 @@
+chardet==2.3.0
+packaging==16.2
+pygobject==3.18.2
+pyparsing==2.1.0
+pyxdg==0.25
+requests==2.9.1
+simplejson==3.7.2
+six==1.10.0
+team==1.0
+urllib3==1.14
+virtualenv==14.0.6

@@ -28,7 +28,7 @@ def get_program():
 	else:
 		print("Getting program list")
 		programs = data.get_programs()
-		response =  jsonify(programs=programs)
+		response = jsonify(programs=programs)
 		print(response)
 		return response
 
