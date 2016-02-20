@@ -8,34 +8,58 @@ import json
 from website import app, data
 
 
-@app.route("/news/<id>")
+@app.route("/news/<id>", methods=["GET"])
 def news(id):
-	article = data.get_article(int(id))
+	"""
+	Get page for a news article
+	:param id: id of article to display
+	"""
+	article = data.get_article_by_title(id)
+	if not article:
+		return "article not found", 404
 	return render_template("news.html", article=article)
 
 
 @login_required
-@app.route("/news/<id>/edit", methods=["GET", "POST"])
+@app.route("/news/<id>/edit", methods=["GET"])
 def edit_news(id):
-	id = int(id)
+	"""
+	Page for editing a news article
+	:param id: id of article to display and edit
+	"""
+	# if request.method == "POST":
+	# 	if not data.get_article_by_title(id):
+	# 		print("Creating article", id)
+	# 		data.create_new_article()
+	#
+	# 	form = request.form
+	# 	data.update_article(id, body=form["content"], title=form["title"], outline=form["outline"], unit=form["unit"])
+	# 	flash("Saved changes", "success")
 
-	if request.method == "POST":
-		if not data.get_article(id):
-			print("Creating article", id)
-			data.create_new_article()
+	article = data.get_article_by_title(id)
+	return render_template("admin/editNews.html", article=article)
 
-		form = request.form
-		data.update_article(id, body=form["content"], title=form["title"], outline=form["outline"], unit=form["unit"])
-		flash("Saved changes", "success")
 
-	creating = request.args.get("action") == "create"
+################################
+# NEWS API
+################################
 
-	article = data.get_article(id)
-	return render_template("admin/editNews.html", article=article, id=id, creating=creating)
+@app.route("/api/news/<id>", methods=["POST"])
+def update_articles(id):
+	return "ok"
+
+
+@app.route("/api/news", methods=["GET"])
+def search_news():
+	start = request.args.get("start")
+	end = request.args.get("end")
+	all = request.args.get("all") is not None
+	latest = data.get_latest_news(all=all)
+	return jsonify(articles=latest)
 
 
 @login_required
-@app.route("/news/<id>/delete", methods=["POST"])
+@app.route("/api/news/<id>", methods=["DELETE"])
 def delete_news(id):
 	id = int(id)
 

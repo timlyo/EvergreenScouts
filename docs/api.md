@@ -6,6 +6,18 @@ parameters are specified below in the form `name=default_value: type`
 
 ## Routes
 
+| :-- | :-- | :-- |
+| method | route | description
+| `GET` | `/api/news` | Get a news article
+| `POST` | `/api/news` | Create a new article returns the id
+| `POST` | `/api/news/<id>` | Update article details
+| `GET` | `/api/program?title&id` | Get a single program
+| `POST` | `/api/program/<id>` | Update a news article
+| `DELET` | `/api/program/<id>` | Delete a news article
+| `GET` | `/api/images/<id>` | Get an image file
+
+
+
 ###/api/news
 
 Route to search the news, accepts the parameters:
@@ -13,31 +25,3 @@ Route to search the news, accepts the parameters:
 * start: int - record number to start from
 * end: int - record number to end at
 * all: bool - quick switch to get all
-    
-
-###/api/program
-
-Route to get program information
-
-####Get
-Return the program
-
-####POST
-Update the program
-
-Both methods accept a name parameter to specify which program to update
-
-###/api/images
-
-Route to get images. doesn't handle sorting, items are returned in the order that they are in the database.
-
-####Get
-Returns a json list of images. If no parameter are specified then the most recent images are returned
-
-####Parameters
-
-* id: int - comma separated ids of the files to load 
-* file: string - comma separated files image file to load, extension not needed(always jpg)
-* date: string - accepts a single date to load or a range in iso format
-* location - not yet implemented
-* limit=50: int - maximum number of images to be loaded 

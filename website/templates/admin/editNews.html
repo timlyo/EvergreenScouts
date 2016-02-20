@@ -1,62 +1,73 @@
 {% extends "partials/layout.html" %}
 {% block headerAdditionals %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.1/trix.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.1/trix.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.1/trix.js"></script>
     <script src="/website/static/javascript/editNews.js"></script>
-{% endblock  %}
+    <script src="/website/static/javascript/post.js"></script>
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="col-sm-8 card">
 
-        <form method="post" action="/news/{{id}}/edit">
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input value="{{article['title']}}" id="title" name="title" class="form-control">
+<div class="ui grid container">
+    <div class="fourteen wide column">
+        <div class="ui segment">
 
-                <label for="Outline">outline</label>
-                <input value="{{article['outline']}}" id="outline" name="outline" class="form-control">
+            <form method="post" action="javascript:save_article(this, {{article['id']}})" class="ui form">
+                <div class="fields">
+                    <div class="ten wide field">
+                        <label for="title">Title</label>
+                        <input value="{{article['title']}}" id="title" name="title" class="form-control">
+                    </div>
+                </div>
 
-                <label for="unit">Unit</label>
-                <select name="unit" id="unit" class="form-control">
-                    {% with unit = article["unit"] %}
-                        <option value="general" {{ "selected" if unit == "general" or "" else ""}}>General</option>
-                        <option value="scouts" {{ "selected" if unit == "scouts"}}>Scouts</option>
-                        <option value="cubs" {{ "selected" if unit == "cubs"}}>Cubs</option>
-                        <option value="beavers" {{ "selected" if unit == "beavers"}}>Beavers</option>
-                        <option value="explorers" {{ "selected" if unit == "explorers"}}>Explorers</option>
-                        <option value="network" {{ "selected" if unit == "network"}}>Network</option>
-                    {% endwith %}
-                </select>
+                <div class="fields">
+                    <div class="ten wide field">
+                        <label for="Outline">Outline</label>
+                        <input value="{{article['outline']}}" id="outline" name="outline" class="form-control">
+                    </div>
+
+                    <div class="four wide field">
+                        <label for="unit">Unit</label>
+                        <select name="unit" id="unit" class="form-control">
+                            {% with unit = article["unit"] %}
+                                <option value="general" {{ "selected" if unit=="general" or "" else ""}}>General</option>
+                                <option value="scouts" {{ "selected" if unit=="scouts" }}>Scouts</option>
+                                <option value="cubs" {{ "selected" if unit=="cubs" }}>Cubs</option>
+                                <option value="beavers" {{ "selected" if unit=="beavers" }}>Beavers</option>
+                                <option value="explorers" {{ "selected" if unit=="explorers" }}>Explorers</option>
+                                <option value="network" {{ "selected" if unit=="network" }}>Network</option>
+                            {% endwith %}
+                        </select>
+                    </div>
+                </div>
+
 
                 <span>State: {{article['state']}}</span>
-            </div>
 
-            <div class="form-group">
-                <input id="body" value="{{article['body'] | safe}}" type="hidden" name="content" class="form-control">
-                <trix-editor input="body"></trix-editor>
-            </div>
+                <div class="form-group">
+                    <input id="body" value="{{article['body'] | safe}}" type="hidden" name="content" class="form-control">
+                    <trix-editor input="body"></trix-editor>
+                </div>
 
-            <div class="form-group">
-                {% if creating %}
-                    <a class="btn btn-default" role="button" href="/admin">Cancel</a>
-                    <a class="btn btn-default" role="button" onclick="publishNews({{id}})">Publish</a>
-                {% else %}
-                    <a class="btn btn-default" role="button" href="/news/{{id}}">Back</a>
-                    <a class="btn btn-default" role="button" href="/admin">Show all</a>
-                    {% if article["state"] == "deleted" %}
-                        <a class="btn btn-default" role="button" onclick="restoreNews({{id}})">Restore</a>
+                <div class="form-group">
+                    {% if creating %}
+                        <a class="ui button" role="button" href="/admin">Cancel</a>
+                        <a class="ui button" role="button" onclick="publishNews({{id}})">Publish</a>
                     {% else %}
-                        <a class="btn btn-default" role="button" onclick="publishNews({{id}})">Publish</a>
-                        <a class="btn btn-default" role="button" onclick="deleteNews({{id}})">Delete</a>
+                        <a class="ui button" role="button" href="/news/{{id}}">Back</a>
+                        <a class="ui button" role="button" href="/admin">Show all</a>
+                        {% if article["state"] == "deleted" %}
+                            <a class="ui button" role="button" onclick="restoreNews({{id}})">Restore</a>
+                        {% else %}
+                            <a class="ui button" role="button" onclick="publishNews({{id}})">Publish</a>
+                            <a class="ui button" role="button" onclick="deleteNews({{id}})">Delete</a>
+                        {% endif %}
                     {% endif %}
 
-
-                {% endif %}
-
-                <input type="submit" value="Save" class="btn btn-default">
-            </div>
-        </form>
+                    <input type="submit" value="Save" class="ui button">
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

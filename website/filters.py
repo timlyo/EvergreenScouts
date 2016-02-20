@@ -5,24 +5,18 @@ import datetime
 import sys
 
 
-def format_date_readable(date: str):
+def format_date_readable(date: datetime.datetime):
 	return format_date(date, "%d %b")
 
 
-def format_date_time(date: str):
+def format_date_time(date: datetime.datetime):
 	return format_date(date, "%d %b %y %H:%M")
 
 
-def format_date(date: str, format="%c"):
-	try:
-		date = datetime.datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+def format_date(date: datetime.datetime, format="%c"):
+	formatted = date.strftime(format)
 
-		formatted = date.strftime(format)
-
-		return formatted
-	except ValueError as e:
-		print("failed to format date: ", e, file=sys.stderr)
-		return date
+	return formatted
 
 
 def is_active(name, term):

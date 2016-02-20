@@ -1,3 +1,4 @@
+import jinja2
 from website import app
 
 from flask import render_template, request
@@ -15,7 +16,7 @@ def is_image_file(filename: str) -> bool:
 @app.route("/")
 @app.route("/index")
 def index():
-	news = reversed(data.get_latest_news(5))
+	news = reversed(data.get_latest_articles(5))
 	return render_template("index.html", news=news, group=None)
 
 
@@ -51,7 +52,13 @@ def images():
 def serve_group(group):
 	tab = "about"
 	news = data.get_latest_news(5, unit=group)
-	return render_template("group/{}.html".format(group), group=group, news=news, tab=tab)
+	result = None
+	try:
+		result = render_template("group/{}.html".format(group), group=group, news=news, tab=tab)
+	except jinja2.exceptions.TemplateNotFound as e:
+		print("No template for group:", group)
+		return "not found", 404
+	return result
 
 
 @app.route("/<group>/program")

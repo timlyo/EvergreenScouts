@@ -7,15 +7,6 @@ from flask import request, jsonify, abort
 from flask_login import current_user
 
 
-@app.route("/api/news", methods=["GET"])
-def search_news():
-	start = request.args.get("start")
-	end = request.args.get("end")
-	all = request.args.get("all") is not None
-	latest = data.get_latest_news(all=all)
-	return jsonify(articles=latest)
-
-
 @app.route("/api/program", methods=["GET"])
 def get_program():
 	name = request.args.get("name")

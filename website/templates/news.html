@@ -1,24 +1,22 @@
-{% extends "partials/layout.html" %}
+{% extends "partials/layout.html" %} {% block body %}
+<div class="ui grid container">
+    <div class="twelve wide column">
+        <div class="ui segment">
+            {% if current_user.is_authenticated %}
+            <a class="ui button" role="button"    href="/news/{{article['title']}}/edit">Edit</a>
+            <a class="ui button" role="button" href="/admin">Show all</a> {% endif %}
 
-{% block body %}
-<div class="container">
-    <div class="col-sm-8 card">
+            <h1>{{article["title"]}}</h1>
 
-        {% if current_user.is_authenticated %}
-            <a class="btn btn-default" role="button" href="/news/{{article['eid']}}/edit">Edit</a>
-            <a class="btn btn-default" role="button" href="/admin">Show all</a>
-        {% endif %}
+            <p class="text-muted">
+                Created: {{article["created"] | format_date_readable}}
+                {% if (article["updated"] != None) %}
+                    Updated: {{ article['updated'] | format_date_readable}}
+                {% endif %}
+            </p>
 
-        <h1>{{article["title"]}}</h1>
-
-        <p class="text-muted">
-            Created: {{article['created'] | format_date_readable}}
-            {% if (article['created'] != article["updated"]) %}
-                Updated: {{ article['updated'] | format_date_readable}}
-            {% endif %}
-        </p>
-
-        {{article["body"] | safe}}
+            {{article["body"] | safe}}
+        </div>
     </div>
 </div>
 {% endblock %}

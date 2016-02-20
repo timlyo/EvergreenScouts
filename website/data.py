@@ -9,11 +9,17 @@ from tinydb import TinyDB, Query, where
 from PIL import Image
 
 import datetime
-
+import rethinkdb
 import hashlib
 from werkzeug.datastructures import FileStorage
 
 from website import app
+import pprint
+
+printer = pprint.PrettyPrinter()
+
+database = rethinkdb.db("evergreenScouts")
+articles = database.table("articles")
 
 program_db = TinyDB(app.config["DATA_DIRECTORY"] + "/programs.json")
 users_db = TinyDB(app.config["DATA_DIRECTORY"] + "/users.json")
@@ -21,6 +27,11 @@ news_db = TinyDB(app.config["DATA_DIRECTORY"] + "/news.json")
 images_db = TinyDB(app.config["DATA_DIRECTORY"] + "/images.json")
 
 pool = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
+
+
+##################
+# Programs
+##################
 
 
 def get_program_list():
@@ -62,7 +73,10 @@ def get_remote_json(url: str) -> dict:
 	return json.loads(response.data.decode("utf-8"))
 
 
+##################
 # user stuff
+##################
+
 def get_user(id: str):
 	result = users_db.search(where("id") == id)
 
@@ -75,15 +89,25 @@ def get_user(id: str):
 		return None
 
 
+##################
 # news stuff
-def get_latest_news(start: int = 0, end: int = None, unit="", all=False):
+##################
+
+def get_latest_articles(start: int = 0, end: int = None, unit="", all=False):
+	connect_to_db()
+
 	result = None
 	if all:
-		result = news_db.all()
+		result = articles.run()
 	elif unit == "":
-		result = news_db.search(where("state") == "published")
+		result = articles.get_all("published", index="state").run()
+	# result = news_db.search(where("state") == "published")
 	else:
-		result = news_db.search((where("unit") == unit) & (where("state") == "published"))
+		result = articles.get_all(
+			unit, index="unit").run()  # TODO and operation
+	# result = news_db.search((where("unit") == unit) & (where("state") == "published"))
+
+	result = list(result)
 
 	if end:
 		return result[start:end]
@@ -91,20 +115,29 @@ def get_latest_news(start: int = 0, end: int = None, unit="", all=False):
 		return result
 
 
-def get_news_count():
+def get_article_count():
 	return len(news_db)
 
 
-def get_article(id=None):
-	result = None
-	if id:
-		result = news_db.get(eid=id)
+def get_article_by_title(title: str):
+	connect_to_db()
+	result = articles.get_all(title, index="title").run()
 
+	try:
+		article = result.next()
+		return article
+	except rethinkdb.net.DefaultCursorEmpty:
+		return None
+
+
+def get_article(id):
+	connect_to_db()
+	result = articles.get(id).run()
 	return result
 
 
 def update_article(id, body=None, title=None, outline=None, unit=None, state=None):
-	assert isinstance(id, int), "id must be an int not a {}".format(type(id))
+	print("Update to article", id)
 
 	data = {}
 	if body:
@@ -124,15 +157,22 @@ def update_article(id, body=None, title=None, outline=None, unit=None, state=Non
 	elif state is not None:
 		print("Invalid value for state", state, file=sys.stderr)
 
-	print("Update to article", id)
 	print(data)
-	data["updated"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-	news_db.update(data, eids=[id])
+	connect_to_db()
+	articles.get(id).update(data).run()
+	# data["updated"] = rethinkdb.now()
+	# articles.get(id).update(data).run()
 
 
-def create_new_article(unit=None) -> int:
-	date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-	news_db.insert({"created": date, "updated": date, "state": "editing"})
+def create_new_article() -> int:
+	connect_to_db()
+
+	date = rethinkdb.now()
+	articles.insert({
+		"created": date,
+		"updated": None,
+		"state": "editing",
+	})
 
 
 # images
@@ -208,3 +248,7 @@ def get_images(id_list=None, file_list=None, date=None, limit=None, location=Non
 				images.append(result)
 
 	return images[:limit]
+
+
+def connect_to_db():
+	rethinkdb.connect("localhost", 28015).repl()
