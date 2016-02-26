@@ -6,7 +6,7 @@ from flask_login import login_required
 import datetime
 from website import app, forms, data
 
-from flaskext.uploads import secure_filename
+from flask.ext.uploads import secure_filename
 import os
 
 
