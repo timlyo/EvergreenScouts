@@ -11,10 +11,10 @@ def format_date_time(date: datetime.datetime):
     return format_date(date, "%d %b %y %H:%M")
 
 
-def format_date(date: datetime.datetime, format="%c"):
+def format_date(date: datetime.datetime, format_string="%c"):
     assert isinstance(date, datetime.datetime), "Date must have a datetime instance, not a {}".format(type(date))
 
-    formatted = date.strftime(format)
+    formatted = date.strftime(format_string)
 
     return formatted
 

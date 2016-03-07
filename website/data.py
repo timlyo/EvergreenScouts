@@ -20,6 +20,8 @@ printer = pprint.PrettyPrinter()
 
 database = rethinkdb.db("evergreenScouts")
 articles = database.table("articles")
+programs = database.table("programs")
+users    = database.table("users")
 
 program_db = TinyDB(app.config["DATA_DIRECTORY"] + "/programs.json")
 users_db = TinyDB(app.config["DATA_DIRECTORY"] + "/users.json")
@@ -40,15 +42,19 @@ def get_program_list():
 
 
 def get_program(name: str):
+    print("Getting program named:", name)
     connect_to_db()
 
-    # program = Query()
-    # result = program_db.search(program["name"] == name)
-    # if len(result) == 1:
-    #     return result[0]
-    # else:
-    #     print(name, "program search done gone wrong:", result)
-    #     print("len", len(result))
+    result = programs.get_all(name, index="name").run()
+    result = list(result)
+    print(result)
+    if len(result) == 0:
+        # TODO none found case
+        pass
+    elif len(result) > 1:
+        return result[0]
+    else:
+        return result[0]
 
 
 def get_programs() -> list:
@@ -103,10 +109,8 @@ def get_latest_articles(start: int = 0, end: int = None, unit="", all=False):
         result = articles.run()
     elif unit == "":
         result = articles.get_all("published", index="state").run()
-    # result = news_db.search(where("state") == "published")
     else:
         result = articles.get_all(unit, index="unit").run()  # TODO and operation
-    # result = news_db.search((where("unit") == unit) & (where("state") == "published"))
 
     result = list(result)
 
@@ -156,7 +160,6 @@ def create_new_article() -> int:
 
 
 ####################
-
 # images
 ####################
 

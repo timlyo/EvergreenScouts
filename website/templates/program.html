@@ -24,7 +24,7 @@
                 </thead>
                 {% for event in program["events"] %}
                 <tr>
-                    <td>{{event[0] | format_date}}</td>
+                    <td>{{event[0] | format_date_readable}}</td>
                     <td>{{event[1]}}</td>
                     <td>{{event[2]}}</td>
                 </tr>
