@@ -2,15 +2,17 @@
 
 {% block header %}
 {{super()}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+    <script src="/static/javascript/editNews.js"></script>
 {% endblock %}
 
 {% block body %}
 <div class="ui grid container">
-    <div class="twelve wide column">
+    <div class="sixteen wide column">
 
         <div class="ui top attached tabular menu">
             <a class="active item" data-tab="program">Program</a>
@@ -19,10 +21,6 @@
 
         <div class="ui bottom attached tab segment active" data-tab="program">
             <ul>
-                <!--{% for program in program_list %}-->
-                <!--<li><a href="editProgram/{{program['name']}}">{{ program["name"] }} </a></li>-->
-                <!--{% endfor %}-->
-
                 <script>
                     var programName = "{{current_user.name}}";
                 </script>
@@ -34,9 +32,14 @@
         </div>
 
         <div class="ui bottom attached tab segment" data-tab="articles">
+            <div id="articleList">
+
+            </div>
+            <script type="text/babel" src="/static/javascript/articles.jsx"></script>
+
             <h2>News Articles</h2>
 
-            <a class="btn btn-default" href="news/{{news_count+1}}/edit?action=create">New Article</a>
+            <a class="ui button" id="newArticleButton">New Article</a>
 
             <br>
             <br>
@@ -45,6 +48,7 @@
                 <thead>
                     <tr>
                         <th>Title</th>
+                        <th>Outline</th>
                         <th>Created</th>
                         <th>Updated</th>
                         <th>Unit</th>
@@ -53,9 +57,14 @@
                 </thead>
                 {% for article in articles %}
                 <tr>
-                    <td><a href="/news/{{article['eid']}}">{{article["title"]}}</a></td>
+                    <td><a href="/news/{{article['id']}}">{{article["title"]}}</a></td>
+                    <td>{{article["outline"]}}</td>
                     <td>{{article["created"] | format_date_time}}</td>
-                    <td>{{article["updated"] | format_date_time}}</td>
+                    {% if article["updated"] %}
+                        <td>{{article["updated"] | format_date_time}}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
                     <td>{{article["unit"]}}</td>
                     <td>{{article["state"]}}</td>
                     <td></td>
@@ -69,6 +78,7 @@
 
 <script>
     $('.menu .item').tab();
+    $("#newArticleButton").click(create_new_article)
 </script>
 
 {% endblock %}

@@ -51,7 +51,7 @@ def images():
 @app.route("/<group>")
 def serve_group(group):
 	tab = "about"
-	news = data.get_latest_news(5, unit=group)
+	news = data.get_latest_articles(5, unit=group)
 	result = None
 	try:
 		result = render_template("group/{}.html".format(group), group=group, news=news, tab=tab)
@@ -87,8 +87,8 @@ def contact(group):
 @login_required
 def admin():
 	program_list = data.get_program_list()
-	articles = reversed(data.get_latest_news(all=True))
-	news_count = data.get_news_count()
+	articles = reversed(data.get_latest_articles(all=True))
+	news_count = data.get_article_count()
 
 	return render_template("admin/admin.html", program_list=program_list, articles=articles, news_count=news_count)
 

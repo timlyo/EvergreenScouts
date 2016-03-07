@@ -1,57 +1,41 @@
-'use strict';
+console.log("Loaded editNews.js");
 
-function deleteNews(id) {
-    var r = confirm("Are you sure you want to delete this article?");
-    if(!r){
-        return;
-    }
+/**
+ * Updates the articles information on the server
+ * @param id: id of the article to update
+ */
+function submit_edit_news_form(id){
+    var data = $("#editNewsForm").serializeArray();
+    var url = "/api/news/" + id;
 
-    $.post("/news/" + id + "/delete", null, function (data, testStatus, jqXHR) {
-        data = JSON.parse(data);
-        if (data.success) {
-            console.log("ok");
-            location.reload();
-        }else{
-            console.log("probs");
-            alert("Error, failed to delete\n data");
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: data,
+        success: function(response){
+            console.log("Success");
+            $.notify("Success", "success");
+        },
+        error: function () {
+            console.log("Error");
         }
     });
 }
 
-function restoreNews(id) {
-    var r = confirm("Are you sure you want to restore this article?");
-    if(!r){
-        return;
-    }
 
-    $.post("/news/" + id + "/restore", null, function (data, testStatus, jqXHR) {
-        data = JSON.parse(data);
-        if (data.success) {
-            console.log("ok");
-            //window.location.replace("/admin");
-            location.reload();
-        }else{
-            console.log("probs");
-            alert("Error, failed to restore\n data");
-        }
-    });
-}
+function create_new_article(){
+    var url = "/api/news";
+    console.log("new Article");
 
-function publishNews(id) {
-    var r = confirm("Are you sure you want to publish this article?");
-    if(!r){
-        return;
-    }
-
-    $.post("/news/" + id + "/publish", null, function (data, testStatus, jqXHR) {
-        data = JSON.parse(data);
-        if (data.success) {
-            console.log("ok");
-            //window.location.replace("/admin");
-            location.reload();
-        }else{
-            console.log("probs");
-            alert("Error, failed to restore\n data");
+    $.ajax({
+        type: "POST",
+        url: url,
+        success: function(response){
+            console.log("Success");
+            $.notify("saved", "success");
+        },
+        error: function () {
+            console.log("Error");
         }
     });
 }

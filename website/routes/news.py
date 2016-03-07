@@ -14,7 +14,7 @@ def news(id):
 	Get page for a news article
 	:param id: id of article to display
 	"""
-	article = data.get_article_by_title(id)
+	article = data.get_article(id)
 	if not article:
 		return "article not found", 404
 	return render_template("news.html", article=article)
@@ -36,18 +36,13 @@ def edit_news(id):
 	# 	data.update_article(id, body=form["content"], title=form["title"], outline=form["outline"], unit=form["unit"])
 	# 	flash("Saved changes", "success")
 
-	article = data.get_article_by_title(id)
+	article = data.get_article(id)
 	return render_template("admin/editNews.html", article=article)
 
 
 ################################
 # NEWS API
 ################################
-
-@app.route("/api/news/<id>", methods=["POST"])
-def update_articles(id):
-	return "ok"
-
 
 @app.route("/api/news", methods=["GET"])
 def search_news():
@@ -56,6 +51,18 @@ def search_news():
 	all = request.args.get("all") is not None
 	latest = data.get_latest_news(all=all)
 	return jsonify(articles=latest)
+
+
+@app.route("/api/news", methods=["POST"])
+def create_article():
+	data.create_new_article()
+	return "ok"
+
+
+@app.route("/api/news/<id>", methods=["POST"])
+def update_article(id):
+	data.update_article(id, request.form)
+	return "ok"
 
 
 @login_required

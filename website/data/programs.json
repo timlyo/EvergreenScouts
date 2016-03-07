@@ -2,8 +2,7 @@
   "_default": {
     "1": {
       "events": [
-        ["2015-10-21", "Scavenger Hunt", ""], ["2015-10-07", "Walk", "Bring Coat"], ["2015-10-28", "Thing", "notes"],
-        ["2016-01-21", "jhadvj", "jhavjda"]
+        ["2015-10-21", "Scavenger Hunt", ""], ["2015-10-07", "Walk", "Bring Coat"], ["2015-10-28", "Thing", "notes"]
       ],
       "name": "Woden"
     },

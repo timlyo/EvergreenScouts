@@ -130,9 +130,9 @@ var Program = React.createClass({
 
         var save_button;
         if (this.state.posting) {
-            save_button = <a className="btn btn-info" disabled>Saving...</a>;
+            save_button = <a className="ui button" disabled>Saving...</a>;
         } else {
-            save_button = <a className="btn btn-info" onClick={this.saveProgram}>Save</a>;
+            save_button = <a className="ui button" onClick={this.saveProgram}>Save</a>;
         }
 
         var week_table;
@@ -148,10 +148,10 @@ var Program = React.createClass({
                 {week_table}
                 <div className="btn-group">
                     {save_button}
-                    <a className="btn btn-info" onClick={this.deleteAll}>
+                    <a className="ui button" onClick={this.deleteAll}>
                         Delete All
                     </a>
-                    <a className="btn btn-info">
+                    <a className="ui button">
                         Export
                     </a>
                 </div>

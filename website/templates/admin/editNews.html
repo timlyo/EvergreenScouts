@@ -2,8 +2,7 @@
 {% block headerAdditionals %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.1/trix.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.1/trix.js"></script>
-    <script src="/website/static/javascript/editNews.js"></script>
-    <script src="/website/static/javascript/post.js"></script>
+    <script src="/static/javascript/editNews.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -12,7 +11,9 @@
     <div class="fourteen wide column">
         <div class="ui segment">
 
-            <form method="post" action="javascript:save_article(this, {{article['id']}})" class="ui form">
+            <form method="post" class="ui form" id="editNewsForm">
+
+                <!--Title-->
                 <div class="fields">
                     <div class="ten wide field">
                         <label for="title">Title</label>
@@ -20,6 +21,7 @@
                     </div>
                 </div>
 
+                <!--Outline + unit-->
                 <div class="fields">
                     <div class="ten wide field">
                         <label for="Outline">Outline</label>
@@ -41,33 +43,37 @@
                     </div>
                 </div>
 
+                <!--State-->
+                <p>State: {{article['state']}}</p>
 
-                <span>State: {{article['state']}}</span>
-
+                <!--Text field-->
                 <div class="form-group">
                     <input id="body" value="{{article['body'] | safe}}" type="hidden" name="content" class="form-control">
                     <trix-editor input="body"></trix-editor>
                 </div>
 
+                <!--Bottom button row-->
                 <div class="form-group">
-                    {% if creating %}
-                        <a class="ui button" role="button" href="/admin">Cancel</a>
-                        <a class="ui button" role="button" onclick="publishNews({{id}})">Publish</a>
+                    <a class="ui button" role="button" href="/news/{{article['id']}}">Back</a>
+                    <!--<a class="ui button" role="button" href="/admin">Show all</a>-->
+                    {% if article["state"] == "deleted" %}
+                        <a class="ui button" role="button" onclick="restoreNews({{id}})">Restore</a>
                     {% else %}
-                        <a class="ui button" role="button" href="/news/{{id}}">Back</a>
-                        <a class="ui button" role="button" href="/admin">Show all</a>
-                        {% if article["state"] == "deleted" %}
-                            <a class="ui button" role="button" onclick="restoreNews({{id}})">Restore</a>
-                        {% else %}
-                            <a class="ui button" role="button" onclick="publishNews({{id}})">Publish</a>
-                            <a class="ui button" role="button" onclick="deleteNews({{id}})">Delete</a>
-                        {% endif %}
+                        <a class="ui button" role="button" onclick="publishNews({{id}})">Publish</a>
+                        <a class="ui button" role="button" onclick="deleteNews({{id}})">Delete</a>
                     {% endif %}
 
-                    <input type="submit" value="Save" class="ui button">
+                    <a class="ui button" id="saveButton">Save</a>
+                    <!--<input type="submit" value="Save" class="ui button">-->
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script>
+    $("#saveButton").click(function(event){
+        submit_edit_news_form("{{article['id']}}");
+        return false;
+    });
+</script>
 {% endblock %}
