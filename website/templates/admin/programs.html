@@ -1,0 +1,65 @@
+{% extends "partials/layout.html" %}
+
+{% block header %}
+{{super()}}
+    <script src="/static/javascript/editNews.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="ui grid container">
+    <div class="sixteen wide column">
+
+        <div class="ui top attached tabular menu">
+            <a class="item" href="/admin/articles">Articles</a>
+            <a class="active item" href="/admin/programs">Program</a>
+        </div>
+
+        <!-- Articles Tab -->
+        <div class="ui bottom attached segment">
+            <div id="articleList">
+
+            </div>
+            <script type="text/babel" src="/static/javascript/articles.jsx"></script>
+
+            <h2>News Articles</h2>
+
+            <a class="ui button" id="newArticleButton">New Article</a>
+
+            <table class="ui table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Outline</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Unit</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                {% for article in articles %}
+                <tr>
+                    <td><a href="/news/{{article['id']}}">{{article["title"]}}</a></td>
+                    <td>{{article["outline"]}}</td>
+                    <td>{{article["created"] | format_date_time}}</td>
+                    {% if article["updated"] %}
+                        <td>{{article["updated"] | format_date_time}}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                    <td>{{article["unit"]}}</td>
+                    <td>{{article["state"]}}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.menu .item').tab();
+    $("#newArticleButton").click(create_new_article)
+</script>
+
+{% endblock %}
