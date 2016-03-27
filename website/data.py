@@ -21,7 +21,7 @@ printer = pprint.PrettyPrinter()
 database = rethinkdb.db("evergreenScouts")
 articles = database.table("articles")
 programs = database.table("programs")
-users    = database.table("users")
+users = database.table("users")
 
 program_db = TinyDB(app.config["DATA_DIRECTORY"] + "/programs.json")
 users_db = TinyDB(app.config["DATA_DIRECTORY"] + "/users.json")
@@ -101,7 +101,7 @@ def get_user(id: str):
 # news stuff
 ##################
 
-def get_latest_articles(start: int = 0, end: int = None, unit="", all=False):
+def get_latest_articles(start: int=0, end: int=None, unit="", all=False):
     connect_to_db()
 
     result = None
@@ -110,7 +110,8 @@ def get_latest_articles(start: int = 0, end: int = None, unit="", all=False):
     elif unit == "":
         result = articles.get_all("published", index="state").run()
     else:
-        result = articles.get_all(unit, index="unit").run()  # TODO and operation
+        result = articles.get_all(
+            unit, index="unit").run()  # TODO and operation
 
     result = list(result)
 
@@ -140,6 +141,7 @@ def get_article(article_id):
     result = articles.get(article_id).run()
     return result
 
+
 def update_article(article_id, data, body=None, title=None, outline=None, unit=None, state=None):
     print("Update to article", article_id)
     print(data)
@@ -147,7 +149,7 @@ def update_article(article_id, data, body=None, title=None, outline=None, unit=N
     articles.get(article_id).update(data).run()
 
 
-def create_new_article() -> int:
+def create_new_article():
     connect_to_db()
 
     date = rethinkdb.now()
