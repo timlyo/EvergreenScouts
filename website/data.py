@@ -108,7 +108,7 @@ def get_latest_articles(start: int=0, end: int=None, unit="", all=False):
     if all:
         result = articles.order_by(index="created").run()
     elif unit == "":
-        result = articles.get_all("published", index="state").order_by(index="created").run()
+        result = articles.get_all("published", index="state").run()
     else:
         result = articles.get_all(unit, index="unit").run()  # TODO and operation
 
@@ -241,4 +241,4 @@ def get_images(id_list=None, file_list=None, date=None, limit=None, location=Non
 
 
 def connect_to_db():
-    rethinkdb.connect("localhost", 29015).repl()
+    rethinkdb.connect("localhost", 28015).repl()
