@@ -98,7 +98,7 @@ def get_user(id: str):
 
 
 ##################
-# news stuff
+# Article stuff
 ##################
 
 def get_latest_articles(start: int=0, end: int=None, unit="", all=False):
@@ -106,9 +106,9 @@ def get_latest_articles(start: int=0, end: int=None, unit="", all=False):
 
     result = None
     if all:
-        result = articles.run()
+        result = articles.order_by(index="created").run()
     elif unit == "":
-        result = articles.get_all("published", index="state").run()
+        result = articles.get_all("published", index="state").order_by(index="created").run()
     else:
         result = articles.get_all(
             unit, index="unit").run()  # TODO and operation
@@ -145,8 +145,10 @@ def get_article(article_id):
 def update_article(article_id, data, body=None, title=None, outline=None, unit=None, state=None):
     print("Update to article", article_id)
     print(data)
+    date = rethinkdb.now()
     connect_to_db()
     articles.get(article_id).update(data).run()
+    articles.get(article_id).update({"updated": date}).run()
 
 
 def create_new_article():
@@ -240,4 +242,4 @@ def get_images(id_list=None, file_list=None, date=None, limit=None, location=Non
 
 
 def connect_to_db():
-    rethinkdb.connect("localhost", 28015).repl()
+    rethinkdb.connect("localhost", 29015).repl()
