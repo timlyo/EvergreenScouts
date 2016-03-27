@@ -14,6 +14,13 @@ Article{
 }
 ```
 
+# State
+
+An article can be in a set of states.
+
+*Editing* An article that has just been created an has not yet been finished
+*Published* A finished article
+
 # Routes
 
 | :-- | :-- |

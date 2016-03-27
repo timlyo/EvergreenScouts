@@ -92,21 +92,19 @@ def admin():
 @app.route("/admin/articles")
 @login_required
 def admin_articles():
-	program_list = data.get_program_list()
 	articles = reversed(data.get_latest_articles(all=True))
 	news_count = data.get_article_count()
 
-	return render_template("admin/admin.html", program_list=program_list, articles=articles, news_count=news_count)
+	return render_template("admin/articles.html", articles=articles, news_count=news_count)
 
 
 @app.route("/admin/programs")
 @login_required
 def admin_programs():
 	program_list = data.get_program_list()
-	articles = reversed(data.get_latest_articles(all=True))
 	news_count = data.get_article_count()
 
-	return render_template("admin/programs.html", program_list=program_list, articles=articles, news_count=news_count)
+	return render_template("admin/programs.html", program_list=program_list, news_count=news_count)
 
 
 @app.route("/editProgram/<name>", methods=["GET"])

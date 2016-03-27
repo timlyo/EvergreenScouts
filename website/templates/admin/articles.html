@@ -2,64 +2,75 @@
 
 {% block header %}
 {{super()}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 
-    <script src="/static/javascript/editNews.js"></script>
+<script src="/static/javascript/editNews.js"></script>
 {% endblock %}
 
 {% block body %}
 <div class="ui grid container">
-    <div class="sixteen wide column">
+  <div class="sixteen wide column">
 
-        <div class="ui top attached tabular menu">
-            <a class="active item" href="/admin/articles">Articles</a>
-            <a class="item" href="/admin/programs">Programs</a>
-        </div>
-
-        <!-- Articles Tab -->
-        <div class="ui bottom attached segment">
-            <h2>News Articles</h2>
-
-            <a class="ui button" id="newArticleButton">New Article</a>
-
-            <table class="ui table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Outline</th>
-                        <th>Created</th>
-                        <th>Updated</th>
-                        <th>Unit</th>
-                        <th>State</th>
-                    </tr>
-                </thead>
-                {% for article in articles %}
-                <tr>
-                    <td><a href="/news/{{article['id']}}">{{article["title"]}}</a></td>
-                    <td>{{article["outline"]}}</td>
-                    <td>{{article["created"] | format_date_time}}</td>
-                    {% if article["updated"] %}
-                        <td>{{article["updated"] | format_date_time}}</td>
-                    {% else %}
-                        <td></td>
-                    {% endif %}
-                    <td>{{article["unit"]}}</td>
-                    <td>{{article["state"]}}</td>
-                    <td></td>
-                </tr>
-                {% endfor %}
-
-            </table>
-        </div>
+    <div class="ui top attached tabular menu">
+      <a class="active item" href="/admin/articles">Articles</a>
+      <a class="item" href="/admin/programs">Programs</a>
     </div>
+
+    <!-- Articles Tab -->
+    <div class="ui bottom attached segment">
+      <h2>News Articles</h2>
+
+      <a class="ui button" id="newArticleButton">New Article</a>
+
+      <table class="ui stacking table">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th>Outline</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>Unit</th>
+          <th>Published</th>
+          <th></th>
+        </tr>
+        </thead>
+        {% for article in articles %}
+        <tr>
+          <td><a href="/news/{{article['id']}}">{{article["title"]}}</a></td>
+          <td>{{article["outline"]}}</td>
+          <td>{{article["created"] | format_date_readable}}</td>
+
+          <td>
+            {% if article["updated"] %}
+              {{article["updated"] | format_date_readable}}
+            {% endif %}
+          </td>
+
+          <td>{{article["unit"]}}</td>
+
+          <td class="center aligned">
+            {% if article["state"] == "published" %}
+              <i class="checkmark icon"></i>
+            {% endif %}
+          </td>
+
+          <td>
+            <i class="trash icon"></i>
+          </td>
+        </tr>
+        {% endfor %}
+
+      </table>
+    </div>
+  </div>
 </div>
 
 <script>
-    $('.menu .item').tab();
-    $("#newArticleButton").click(create_new_article)
+  $('.menu .item').tab();
+  $("#newArticleButton").click(create_new_article)
 </script>
 
 {% endblock %}

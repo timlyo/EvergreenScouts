@@ -108,10 +108,9 @@ def get_latest_articles(start: int=0, end: int=None, unit="", all=False):
     if all:
         result = articles.order_by(index="created").run()
     elif unit == "":
-        result = articles.get_all("published", index="state").order_by(index="created").run()
+        result = articles.get_all("published", index="state").run()
     else:
-        result = articles.get_all(
-            unit, index="unit").run()  # TODO and operation
+        result = articles.get_all(unit, index="unit").run()  # TODO and operation
 
     result = list(result)
 
