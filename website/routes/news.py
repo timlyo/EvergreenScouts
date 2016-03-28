@@ -17,7 +17,7 @@ def news(id):
 	article = data.get_article(id)
 	if not article:
 		return "article not found", 404
-	return render_template("news.html", article=article)
+	return render_template("article.html", article=article)
 
 
 @login_required

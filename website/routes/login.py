@@ -4,7 +4,8 @@ from website import login_manager
 from flask import render_template, request, redirect, flash, url_for
 import flask_login
 
-from website import forms, database, data
+from website import forms, data
+from website.user import User
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -13,11 +14,10 @@ def login():
 	id = request.form["user_name"]
 	password = request.form["password"]
 	user = None
-	# login_user()
 	try:
-		user = database.User(id)
+		user = User(id)
 	except KeyError as error:
-		flash("No user with that id", "warning")
+		flash("No user with that name", "warning")
 		print(error)
 		return redirect("/")
 
@@ -44,26 +44,22 @@ def logout():
 
 @login_manager.user_loader
 def load_user(user_id: str):
-	try:
-		data.get_user(user_id)
-	except KeyError:
-		return None
+	user = User(user_id)
 
-	current_user = database.User(user_id)
-	current_user.id = user_id
-	return current_user
+	return user
 
 
 @login_manager.request_loader
-def request_loader(request) -> database.User:
+def request_loader(request) -> User:
 	user_id = request.form.get("id")
-	try:
-		data.get_user(user_id)
-	except KeyError:
+	password = request.form.get("pw")
+
+	if user_id is None:
 		return None
 
-	current_user = database.User(user_id)
+	user = User(user_id)
 
-	current_user.is_authenticated = database.users[user_id].check_password(request.form["pw"])
-
-	return current_user
+	if user.check_password(password):
+		return user
+	else:
+		return None

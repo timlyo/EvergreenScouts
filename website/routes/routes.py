@@ -4,7 +4,7 @@ from website import data
 
 from flask import render_template, request, redirect
 import flask
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from flask.ext.uploads import IMAGES, secure_filename
 
@@ -114,4 +114,4 @@ def admin_programs():
 @app.route("/editProgram/<name>", methods=["GET"])
 @login_required
 def edit_program(name):
-	return render_template("admin/editProgram.html", name=name)
+	return render_template("admin/edit_programmme.html", name=name)

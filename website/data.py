@@ -14,6 +14,7 @@ import hashlib
 from werkzeug.datastructures import FileStorage
 
 from website import app
+from website.user import User
 import pprint
 
 printer = pprint.PrettyPrinter()
@@ -80,18 +81,13 @@ def get_remote_json(url: str) -> dict:
 # user stuff
 ##################
 
-def get_user(id: str):
-	connect_to_db()
-	result = list(users.get_all(id, index="id").run())
-	# result = users_db.search(where("id") == id)
-
-	if len(result) == 1:
-		return result[0]
-	elif len(result) == 0:
-		raise KeyError("No user with id " + str(id))
-	else:
-		print("Error: duplicate ids", result, file=sys.stderr)
+def get_user_details(user_id: str) -> dict:
+	if user_id is None:
 		return None
+
+	connect_to_db()
+	user = users.get(user_id).run()
+	return user
 
 
 ##################
@@ -162,7 +158,7 @@ def get_article(article_id):
 	return result
 
 
-def update_article(article_id, data, body=None, title=None, outline=None, unit=None, state=None):
+def update_article(article_id, data):
 	print("Update to article", article_id)
 	print(data)
 	date = rethinkdb.now()

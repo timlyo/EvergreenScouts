@@ -2,25 +2,27 @@
 
 {% block body %}
 <div class="ui grid container">
-    <div class="twelve wide column">
-        {% include "partials/tabs.html" %}
-        <div class="ui bottom attached active tab segment">
-            <div class="ui grid">
-                <div class="five wide column">
-                    <img src="static/img/cubs.png" class="ui medium image">
-                </div>
-
-                <div class="seven wide column">
-
-                    <h1>Evergreens Cubs</h1>
-
-                    <p>Bromsgrove based scout group</p>
-                </div>
-
-            </div>
+  <div class="twelve wide column">
+    {% include "partials/tabs.html" %}
+    <div class="ui bottom attached active tab segment">
+      <div class="ui grid">
+        <div class="five wide column">
+          <img src="static/img/cubs.png" class="ui medium image">
         </div>
-    </div>
 
-    {% include "partials/latestNews.html" %}
+        <div class="seven wide column">
+
+          <h1>Evergreens Cubs</h1>
+
+          <p>Bromsgrove based scout group</p>
+
+          {% include "partials/image_carousel.html" %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {% include "partials/latestNews.html" %}
 </div>
 {% endblock %}
