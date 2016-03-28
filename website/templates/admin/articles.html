@@ -33,32 +33,33 @@
         </tr>
         </thead>
         {% for article in articles %}
-        <tr>
-          <td><a href="/news/{{article['id']}}">{{article["title"]}}</a></td>
-          <td>{{article["outline"]}}</td>
-          <td>{{article["created"] | format_date_readable}}</td>
+          <tr class={{"disabled" if article["deleted"] else ""}}>
 
-          <td>
-            {% if article["updated"] %}
-            {{article["updated"] | format_date_readable}}
-            {% endif %}
-          </td>
+            <td><a href="/news/{{article['id']}}">{{article["title"]}}</a></td>
+            <td>{{article["outline"]}}</td>
+            <td>{{article["created"] | format_date_readable}}</td>
 
-          <td>{{article["unit"]}}</td>
+            <td>
+              {% if article["updated"] %}
+              {{article["updated"] | format_date_readable}}
+              {% endif %}
+            </td>
 
-          <td class="center aligned">
-            {% if article["state"] == "published" %}
-            <i class="checkmark icon"></i>
-            {% endif %}
-          </td>
+            <td>{{article["unit"]}}</td>
 
-          <td>
-            <button class="ui icon button" onclick="delete_article('{{article['id']}}')">
-              <i class="trash icon"></i>
-            </button>
+            <td class="center aligned">
+              {% if article["published"] %}
+                <i class="checkmark icon"></i>
+              {% endif %}
+            </td>
 
-          </td>
-        </tr>
+            <td>
+              <button class="ui icon button" onclick="delete_article('{{article['id']}}')">
+                <i class="trash icon"></i>
+              </button>
+
+            </td>
+          </tr>
         {% endfor %}
 
       </table>
