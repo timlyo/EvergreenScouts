@@ -16,8 +16,8 @@ app.jinja_env.filters["active"] = filters.is_active
 app.jinja_env.filters["active_item"] = filters.is_active_item
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-app.config["DATA_DIRECTORY"] = os.path.join(APP_ROOT, "data/")
-app.config["IMAGE_DIRECTORY"] = os.path.join(APP_ROOT, "data/images/")
+app.config["DATA_DIRECTORY"] = os.path.join(APP_ROOT, "files/")
+app.config["IMAGE_DIRECTORY"] = os.path.join(APP_ROOT, app.config["DATA_DIRECTORY"] + "/images/")
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)

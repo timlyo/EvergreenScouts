@@ -1,6 +1,6 @@
 import jinja2
 from website import app
-from website import data
+from website.data import articles, images, programmes
 
 from flask import render_template, request, redirect
 import flask
@@ -31,14 +31,14 @@ def upload_image():
 				print("Error", file, " not image")
 				return "Not an image", 418
 
-			data.save_image(file)
+			images.save_image(file)
 			return "ok"
 
 	return render_template("upload.html")
 
 
 @app.route("/images")
-def images():
+def images_page():
 	return render_template("images.html")
 
 
@@ -51,26 +51,27 @@ def images():
 @app.route("/<group>")
 def serve_group(group):
 	tab = "about"
-	news = data.get_sidebar_articles(unit=group)
+	news = articles.get_sidebar_articles(unit=group)
+	recent_images = images.get_recent_images()
 	result = None
 	try:
-		result = render_template("group/{}.html".format(group), group=group, news=news, tab=tab)
+		result = render_template("group/{}.html".format(group), group=group, news=news, tab=tab, images=recent_images)
 	except jinja2.exceptions.TemplateNotFound as e:
 		print("No template for group:", group)
 		return "not found", 404
 	return result
 
 
-@app.route("/<group>/program")
+@app.route("/<group>/programme")
 def show_program(group):
-	tab = "program"
+	tab = "programme"
 	if group == "cubs":
-		thor_calendar = data.get_program("Thor")
-		woden_calendar = data.get_program("Woden")
+		thor_calendar = programmes.get_program("Thor")
+		woden_calendar = programmes.get_program("Woden")
 
 		return render_template("program.html", group="cubs", programs=[thor_calendar, woden_calendar], tab=tab)
 	if group == "scouts":
-		program = data.get_program("Scouts")
+		program = programmes.get_program("Scouts")
 
 		return render_template("program.html", group="scouts", programs=[program])
 	else:

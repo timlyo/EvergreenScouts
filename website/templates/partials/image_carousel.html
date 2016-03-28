@@ -1,16 +1,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick.min.css">
-<link rel="stylesheet" type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.9/slick-theme.min.css">
 
-<div id="imageCarousel">
-  <div>your content</div>
-  <div>your content</div>
-  <div>your content</div>
-</div>
-
+{% if images %}
+  <div id="imageCarousel">
+    {% for image in images %}
+      <img src="{{'/api/images/' + image['file'] + '.jpg'}}">
+    {% endfor %}
+    </div>
+{% else %}
+  <p>No Images</p>
+{% endif %}
 <script>
   $(document).ready(function () {
-    $('#imageCarousel').slick();
+    $('#imageCarousel').slick({
+      dots: true,
+      arrows: true,
+      autoplay: true,
+    });
   });
 </script>

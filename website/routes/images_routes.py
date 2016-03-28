@@ -1,10 +1,11 @@
-from website import app
+from website import app, data
 
-from flask import request
+from flask import request, send_from_directory, jsonify
 
 
 @app.route("/api/images", methods=["GET"])
-def get_image():
+def get_images():
+	"""Get a list of image urls"""
 	image_id = request.args.get("id")
 	file = request.args.get("file")
 	date = request.args.get("date")
@@ -16,3 +17,9 @@ def get_image():
 
 	result = data.get_images(image_id, file, date, limit, location, get_all)
 	return jsonify({"images": result})
+
+
+@app.route("/api/images/<name>", methods=["GET"])
+def get_image(name):
+	"""Get a single image file"""
+	return send_from_directory(app.config["IMAGE_DIRECTORY"], name)

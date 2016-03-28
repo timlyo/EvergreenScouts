@@ -1,27 +1,32 @@
 {% extends "partials/layout.html" %}
 
-{% block headerAdditionals %}
-<link href='{{url_for("static", filename="css/landing.css")}}' rel='stylesheet' type='text/css'>
+{% block header %}
+{{super()}}
 {% endblock %}
 
 {% block body %}
 <div class="ui grid container">
-    <div class="twelve wide column">
-        {% include "partials/tabs.html" %}
-        <div class="ui bottom attached active tab segment">
-            <div class="ui grid">
-                <div class="five wide column">
-                    <img src="static/img/scouts.jpg" class="img">
-                </div>
+  <div class="twelve wide column">
 
-                <div class="seven wide column">
-                    <h1>Evergreens Scouts</h1>
+    {% include "partials/tabs.html" %}
 
-                    Bromsgrove based scout group
-                </div>
-            </div>
+    <div class="ui bottom attached active tab segment">
+      <div class="ui grid">
+
+        <div class="five wide column">
+          <img src="static/img/scouts.jpg" class="ui medium image">
         </div>
 
-        {% include "partials/latestNews.html" %}
+        <div class="seven wide column">
+          <h1>Evergreens Scouts</h1>
+
+          Bromsgrove based scout group
+        </div>
+
+      </div>
     </div>
-    {% endblock %}
+
+    {% include "partials/latestNews.html" %}
+  </div>
+</div>
+{% endblock %}
