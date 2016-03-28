@@ -55,7 +55,6 @@
                 <!--Bottom button row-->
                 <div class="form-group">
                     <a class="ui button" role="button" href="/news/{{article['id']}}">Back</a>
-                    <!--<a class="ui button" role="button" href="/admin">Show all</a>-->
                     {% if article["state"] == "deleted" %}
                         <a class="ui button" role="button" onclick="restoreNews({{id}})">Restore</a>
                     {% else %}
@@ -64,7 +63,6 @@
                     {% endif %}
 
                     <a class="ui button" id="saveButton">Save</a>
-                    <!--<input type="submit" value="Save" class="ui button">-->
                 </div>
             </form>
         </div>

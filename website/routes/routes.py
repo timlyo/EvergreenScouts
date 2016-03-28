@@ -16,7 +16,7 @@ def is_image_file(filename: str) -> bool:
 @app.route("/")
 @app.route("/index")
 def index():
-	news = reversed(data.get_latest_articles(5))
+	news = data.get_sidebar_articles()
 	return render_template("index.html", news=news, group=None)
 
 
@@ -51,7 +51,7 @@ def images():
 @app.route("/<group>")
 def serve_group(group):
 	tab = "about"
-	news = data.get_latest_articles(5, unit=group)
+	news = data.get_sidebar_articles(unit=group)
 	result = None
 	try:
 		result = render_template("group/{}.html".format(group), group=group, news=news, tab=tab)

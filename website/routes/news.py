@@ -1,7 +1,7 @@
 from website import app
 
-from flask import render_template, request, flash, jsonify
-from flask_login import login_required
+from flask import render_template, request, flash, jsonify, abort
+from flask_login import login_required, current_user
 
 import json
 
@@ -37,7 +37,7 @@ def edit_news(id):
 	# 	flash("Saved changes", "success")
 
 	article = data.get_article(id)
-	return render_template("admin/editNews.html", article=article)
+	return render_template("admin/edit_article.html", article=article)
 
 
 ################################
@@ -55,12 +55,16 @@ def search_news():
 
 @app.route("/api/news", methods=["POST"])
 def create_article():
+	if current_user.is_authenticated:
+		abort(401)
 	data.create_new_article()
 	return "ok"
 
 
 @app.route("/api/news/<id>", methods=["POST"])
 def update_article(id):
+	if current_user.is_authenticated:
+		abort(401)
 	data.update_article(id, request.form)
 	return "ok"
 
@@ -68,6 +72,8 @@ def update_article(id):
 @login_required
 @app.route("/api/news/<id>", methods=["DELETE"])
 def delete_news(id):
+	if current_user.is_authenticated:
+		abort(401)
 	id = int(id)
 
 	data.update_article(id, state="deleted")

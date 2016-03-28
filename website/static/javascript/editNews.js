@@ -14,10 +14,11 @@ function submit_edit_news_form(id){
         data: data,
         success: function(response){
             console.log("Success");
-            $.notify("Success", "success");
+            $.notify("Success", "success" + response);
         },
-        error: function () {
+        error: function (jqXHR, textStatus, errorThrown ) {
             console.log("Error");
+            $.notify("Error " + errorThrown), "error";
         }
     });
 }

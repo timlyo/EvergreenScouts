@@ -98,6 +98,16 @@ def get_user(id: str):
 # Article stuff
 ##################
 
+def get_sidebar_articles(unit=None) -> list:
+	connect_to_db()
+	result = articles.get_all([True, False], index="state")
+
+	if unit is not None:
+		result = result.filter({"unit":unit})
+
+	return list(result.run())
+
+
 def get_latest_articles(start: int = 0, end: int = None, unit="", all=False):
 	connect_to_db()
 
@@ -105,7 +115,7 @@ def get_latest_articles(start: int = 0, end: int = None, unit="", all=False):
 	if all:
 		result = articles.order_by(index="created").run()
 	elif unit == "":
-		result = articles.get_all("published", index="state").run()
+		result = articles.get_all(True, index="published").run()
 	else:
 		result = articles.get_all(unit, index="unit").run()  # TODO and operation
 
@@ -118,7 +128,7 @@ def get_latest_articles(start: int = 0, end: int = None, unit="", all=False):
 
 
 def get_article_count():
-	return len(news_db)
+	return articles.count().run()
 
 
 def get_article_by_title(title: str):
@@ -154,7 +164,8 @@ def create_new_article():
 	articles.insert({
 		"created": date,
 		"updated": None,
-		"state": "editing",
+		"published": False,
+		"deleted": False,
 		"title": "New Article",
 	}).run()
 

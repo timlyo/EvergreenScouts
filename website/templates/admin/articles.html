@@ -2,11 +2,6 @@
 
 {% block header %}
 {{super()}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
-
 <script src="/static/javascript/editNews.js"></script>
 {% endblock %}
 
@@ -45,7 +40,7 @@
 
           <td>
             {% if article["updated"] %}
-              {{article["updated"] | format_date_readable}}
+            {{article["updated"] | format_date_readable}}
             {% endif %}
           </td>
 
@@ -53,12 +48,15 @@
 
           <td class="center aligned">
             {% if article["state"] == "published" %}
-              <i class="checkmark icon"></i>
+            <i class="checkmark icon"></i>
             {% endif %}
           </td>
 
           <td>
-            <i class="trash icon"></i>
+            <button class="ui icon button" onclick="delete_article('{{article['id']}}')">
+              <i class="trash icon"></i>
+            </button>
+
           </td>
         </tr>
         {% endfor %}
@@ -70,7 +68,25 @@
 
 <script>
   $('.menu .item').tab();
-  $("#newArticleButton").click(create_new_article)
+  $("#newArticleButton").click(function() {
+    create_new_article();
+    location.reload();
+  });
+
+  function delete_article(id) {
+    alert(id);
+    $.ajax({
+        type: "DELETE",
+        url: "/api/news/" + id,
+        success: function(response){
+            console.log("Success");
+            $.notify("Success", "success");
+        },
+        error: function () {
+            console.log("Error");
+        }
+    });
+  }
 </script>
 
 {% endblock %}
