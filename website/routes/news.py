@@ -56,17 +56,19 @@ def search_news():
 @app.route("/api/news", methods=["POST"])
 def create_article():
 	if current_user.is_authenticated:
+		data.create_new_article()
+		return "ok"
+	else:
 		abort(401)
-	data.create_new_article()
-	return "ok"
 
 
 @app.route("/api/news/<id>", methods=["POST"])
 def update_article(id):
 	if current_user.is_authenticated:
+		data.update_article(id, request.form)
+		return "ok"
+	else:
 		abort(401)
-	data.update_article(id, request.form)
-	return "ok"
 
 
 @login_required
