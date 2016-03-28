@@ -27,14 +27,6 @@ def edit_news(id):
 	Page for editing a news article
 	:param id: id of article to display and edit
 	"""
-	# if request.method == "POST":
-	# 	if not data.get_article_by_title(id):
-	# 		print("Creating article", id)
-	# 		data.create_new_article()
-	#
-	# 	form = request.form
-	# 	data.update_article(id, body=form["content"], title=form["title"], outline=form["outline"], unit=form["unit"])
-	# 	flash("Saved changes", "success")
 
 	article = data.get_article(id)
 	return render_template("admin/edit_article.html", article=article)
@@ -71,15 +63,26 @@ def update_article(id):
 		abort(401)
 
 
-@login_required
-@app.route("/api/news/<id>", methods=["DELETE"])
-def delete_news(id):
+@app.route("/api/news/<article_id>", methods=["DELETE"])
+def delete_article(article_id):
 	if current_user.is_authenticated:
-		abort(401)
-	id = int(id)
+		print("Deleting article: ", article_id)
 
-	data.update_article(id, state="deleted")
-	return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+		data.delete_article(article_id)
+		return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+	else:
+		abort(401)
+
+
+@app.route("/api/news/<article_id>", methods=["RESTORE"])
+def restore_article(article_id):
+	if current_user.is_authenticated:
+		print("Deleting article: ", article_id)
+
+		data.restore_article(article_id)
+		return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+	else:
+		abort(401)
 
 
 @login_required

@@ -92,10 +92,14 @@ def admin():
 @app.route("/admin/articles")
 @login_required
 def admin_articles():
-	articles = reversed(data.get_latest_articles(all=True))
-	news_count = data.get_article_count()
+	deleted = request.args.get("deleted") == "true"
+	articles = None
+	if deleted:
+		articles = data.get_all_deleted_articles()
+	else:
+		articles = data.get_all_undeleted_articles()
 
-	return render_template("admin/articles.html", articles=articles, news_count=news_count)
+	return render_template("admin/articles.html", articles=articles, deleted=deleted)
 
 
 @app.route("/admin/programs")

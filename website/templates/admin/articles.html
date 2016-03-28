@@ -16,10 +16,17 @@
 
     <!-- Articles Tab -->
     <div class="ui bottom attached segment">
-      <h2>News Articles</h2>
+      <h2>{{"Deleted Articles" if deleted else "Articles"}}</h2>
 
-      <a class="ui button" id="newArticleButton">New Article</a>
+      <!--Buttons-->
+      {% if not deleted %}
+        <a class="ui button" id="newArticleButton">New Article</a>
+        <a class="ui button" id="showDeletedButton" href="/admin/articles?deleted=true">Show Deleted</a>
+      {% else %}
+        <a class="ui button" id="showAllButton" href="/admin/articles">Show All</a>
+      {% endif %}
 
+      <!--Table-->
       <table class="ui stacking table">
         <thead>
         <tr>
@@ -32,9 +39,9 @@
           <th></th>
         </tr>
         </thead>
-        {% for article in articles %}
-          <tr class={{"disabled" if article["deleted"] else ""}}>
 
+        {% for article in articles %}
+          <tr>
             <td><a href="/news/{{article['id']}}">{{article["title"]}}</a></td>
             <td>{{article["outline"]}}</td>
             <td>{{article["created"] | format_date_readable}}</td>
@@ -53,16 +60,25 @@
               {% endif %}
             </td>
 
-            <td>
-              <button class="ui icon button" onclick="delete_article('{{article['id']}}')">
-                <i class="trash icon"></i>
-              </button>
+            {% if deleted %}
+              <td>
+                <button class="ui icon button" onclick="restore_article('{{article['id']}}')">
+                  <i class="recycle icon"></i>
+                </button>
 
-            </td>
+              </td>
+            {% else %}
+              <td>
+                <button class="ui icon button" onclick="delete_article('{{article['id']}}')">
+                  <i class="trash icon"></i>
+                </button>
+
+              </td>
+            {% endif %}
           </tr>
         {% endfor %}
-
       </table>
+
     </div>
   </div>
 </div>
@@ -75,7 +91,6 @@
   });
 
   function delete_article(id) {
-    alert(id);
     $.ajax({
         type: "DELETE",
         url: "/api/news/" + id,
@@ -87,6 +102,22 @@
             console.log("Error");
         }
     });
+    location.reload();
+  }
+
+  function restore_article(id) {
+    $.ajax({
+        type: "RESTORE",
+        url: "/api/news/" + id,
+        success: function(response){
+            console.log("Success");
+            $.notify("Success", "success");
+        },
+        error: function () {
+            console.log("Error");
+        }
+    });
+    location.reload();
   }
 </script>
 

@@ -100,12 +100,26 @@ def get_user(id: str):
 
 def get_sidebar_articles(unit=None) -> list:
 	connect_to_db()
-	result = articles.get_all([True, False], index="state")
+	query = articles.get_all([True, False], index="state")
 
 	if unit is not None:
-		result = result.filter({"unit":unit})
+		query = query.filter({"unit": unit})
 
-	return list(result.run())
+	return list(query.run())
+
+
+def get_all_undeleted_articles() -> list:
+	connect_to_db()
+	query = articles.get_all(False, index="deleted")
+
+	return list(query.run())
+
+
+def get_all_deleted_articles() -> list:
+	connect_to_db()
+	query = articles.get_all(True, index="deleted")
+
+	return list(query.run())
 
 
 def get_latest_articles(start: int = 0, end: int = None, unit="", all=False):
@@ -155,6 +169,16 @@ def update_article(article_id, data, body=None, title=None, outline=None, unit=N
 	connect_to_db()
 	articles.get(article_id).update(data).run()
 	articles.get(article_id).update({"updated": date}).run()
+
+
+def delete_article(article_id):
+	connect_to_db()
+	articles.get(article_id).update({"deleted": True}).run()
+
+
+def restore_article(article_id):
+	connect_to_db()
+	articles.get(article_id).update({"deleted": False}).run()
 
 
 def create_new_article():
