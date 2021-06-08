@@ -8,7 +8,7 @@ itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
 packaging==16.2
-Pillow==3.1.1
+Pillow==8.2.0
 pyparsing==2.1.0
 pyxdg==0.25
 requests==2.9.1
